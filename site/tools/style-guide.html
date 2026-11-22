@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>스타일 가이드 샘플</title>
+<link rel="stylesheet" href="nanumsquareneo.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  /* ── 가이드 값 ───────────────────────────── */
+  :root {
+    --font: "NanumSquare Neo", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --fs-xs: 13px; --fs-sm: 14px; --fs-md: 16px; --fs-lg: 17px; --fs-h2: 20px; --fs-h1: 30px;
+    --page: #f3f5f7; --panel: #ffffff; --line: #d9dfe5; --soft: #edf1f6;
+    --accent: #1f6feb; --accent-soft: #e6effd; --motor: #1f6feb; --gravity: #c2410c; --good: #15803d; --bad: #b91c1c;
+  }
+  :root[data-theme="dark"] {
+    --page: #11161c; --panel: #19212a; --line: #2c3742; --soft: #1f2b38;
+    --accent: #5b9dff; --accent-soft: #1b2a3f; --motor: #5b9dff; --gravity: #fb923c; --good: #4ade80; --bad: #f87171; color-scheme: dark;
+  }
+  /* 지금 색: 제목·본문·핵심어 모두 같은 거의 검정 + 보조 회색 */
+  .now { --strong: #18202a; --text: #18202a; --muted: #5b6673; }
+  :root[data-theme="dark"] .now { --strong: #e6ebf0; --text: #e6ebf0; --muted: #9aa6b2; }
+  /* 제안 색: 진하게 / 본문 / 보조 3단계 */
+  .new, .guide { --strong: #111821; --text: #333d48; --muted: #5f6b78; }
+  :root[data-theme="dark"] .new, :root[data-theme="dark"] .guide { --strong: #f1f4f7; --text: #d3dae1; --muted: #9aa6b2; }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); font-family: var(--font); font-size: var(--fs-md); line-height: 1.75; word-break: keep-all; overflow-wrap: break-word; color: #333d48; }
+  :root[data-theme="dark"] body { color: #d3dae1; }
+  .bar { position: sticky; top: 0; z-index: 3; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; padding: 10px 24px;
+    background: var(--panel); border-bottom: 1px solid var(--line); font-size: var(--fs-sm); }
+  .bar b { font-size: var(--fs-md); font-weight: 800; }
+  .bar button { font: 700 var(--fs-sm) var(--font); padding: 6px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--page); color: inherit; cursor: pointer; }
+  main { max-width: 1440px; margin: 0 auto; padding: 24px; display: flex; flex-direction: column; gap: 36px; }
+  .sec-t { font-size: var(--fs-h2); font-weight: 800; margin: 0 0 4px; letter-spacing: -0.015em; }
+  .sec-d { margin: 0 0 16px; font-size: var(--fs-sm); opacity: .8; }
+
+  /* ── 비교 ── */
+  .cmp { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 560px), 1fr)); gap: 20px; }
+  .col > .lbl { font-size: var(--fs-sm); font-weight: 800; margin-bottom: 8px; display: flex; gap: 8px; align-items: center; }
+  .col > .lbl span { font-weight: 400; opacity: .75; }
+  .demo { background: var(--page); border: 1px solid var(--line); border-radius: 14px; padding: 24px; color: var(--text); display: flex; flex-direction: column; gap: 16px; }
+  .demo .eyebrow { display: flex; gap: 8px; align-items: center; font-size: var(--fs-xs); color: var(--muted); }
+  .demo .chip { font-weight: 700; padding: 2px 9px; border-radius: 999px; background: var(--soft); color: var(--muted); }
+  .demo h1 { margin: 0; font-size: var(--fs-h1); line-height: 1.3; font-weight: 800; letter-spacing: -0.02em; color: var(--strong); }
+  .demo h1 .n { color: var(--muted); font-weight: 700; margin-right: 8px; }
+  .demo .lead { margin: 0; font-size: var(--fs-lg); color: var(--muted); }
+  .demo .lead b { color: var(--text); font-weight: 700; }
+  .demo .stepper { display: flex; gap: 8px; flex-wrap: wrap; }
+  .demo .stepper a { display: flex; align-items: center; gap: 7px; padding: 4px 12px 4px 5px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel);
+    font-size: var(--fs-sm); color: var(--muted); text-decoration: none; }
+  .demo .stepper a i { font-style: normal; font-weight: 800; font-size: var(--fs-xs); width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: var(--soft); }
+  .demo .stepper a.on { border-color: var(--accent); color: var(--accent); font-weight: 700; background: var(--accent-soft); }
+  .demo .stepper a.on i { background: var(--accent); color: var(--panel); }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 24px 26px; display: flex; flex-direction: column; gap: 14px; }
+  .card h2 { margin: 0; font-size: var(--fs-h2); font-weight: 800; letter-spacing: -0.015em; line-height: 1.4; color: var(--strong); display: flex; align-items: center; gap: 10px; }
+  .card h2 .num { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--line); display: grid; place-items: center; font-size: var(--fs-sm); color: var(--muted); font-weight: 800; flex: none; }
+  .card p { margin: 0; font-size: var(--fs-lg); max-width: 60ch; }
+  .card p b { color: var(--strong); font-weight: 700; }
+  .card .link { font-size: var(--fs-sm); color: var(--muted); }
+  .card a { color: var(--accent); font-weight: 700; text-decoration: none; }
+  .card a:hover { -webkit-text-stroke: 0.6px currentColor; }
+  .card .note { font-size: var(--fs-sm); color: var(--muted); line-height: 1.7; }
+  .formula { font: 600 17px var(--mono); background: var(--soft); color: var(--strong); padding: 14px 16px; border-radius: 8px; }
+  .ro { display: flex; gap: 22px; flex-wrap: wrap; }
+  .ro div { display: flex; flex-direction: column; }
+  .ro .k { font-size: var(--fs-xs); color: var(--muted); }
+  .ro .v { font: 600 20px var(--mono); color: var(--strong); font-variant-numeric: tabular-nums; }
+  .ro .v small { font-size: var(--fs-xs); color: var(--muted); font-weight: 400; margin-left: 3px; }
+  .ro .v.m { color: var(--motor); } .ro .v.g { color: var(--gravity); }
+  table { border-collapse: collapse; font-size: var(--fs-sm); width: 100%; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { font-size: var(--fs-xs); color: var(--muted); font-weight: 700; }
+  td.n { text-align: right; font-family: var(--mono); color: var(--strong); }
+  .in { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: var(--fs-sm); color: var(--muted); }
+  .in input { width: 7.5em; font: 600 var(--fs-md) var(--mono); padding: 7px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--page); color: var(--strong); }
+  .in button { font: 700 var(--fs-md) var(--font); padding: 8px 16px; border-radius: 8px; border: 1px solid var(--strong); background: var(--strong); color: var(--panel); }
+  .fb { font-size: var(--fs-sm); padding: 12px 14px; border-radius: 8px; background: var(--soft); line-height: 1.7; }
+  .fb.ok { border-left: 4px solid var(--good); } .fb.ok b { color: var(--good); }
+
+  /* ── 가이드 표 ── */
+  .guide { color: var(--text); }
+  .gcard { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 8px 24px 16px; }
+  .scale td { vertical-align: baseline; padding: 12px 10px; }
+  .scale td:first-child { font-family: var(--mono); font-size: var(--fs-xs); color: var(--muted); white-space: nowrap; }
+  .scale .ex { color: var(--strong); }
+  .scale .use { font-size: var(--fs-sm); color: var(--muted); }
+  .sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 12px; padding: 12px 0; }
+  .sw > div { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--panel); }
+  .sw .chipc { height: 44px; display: flex; align-items: center; padding: 0 14px; font-weight: 800; font-size: var(--fs-lg); background: var(--panel); border-bottom: 1px solid var(--line); }
+  .sw .meta { padding: 8px 14px 10px; font-size: var(--fs-xs); color: var(--muted); line-height: 1.6; }
+  .sw .meta b { color: var(--strong); font-size: var(--fs-sm); }
+  .sw .meta code { font-family: var(--mono); }
+  .rules { margin: 8px 0 0; padding-left: 1.3em; display: flex; flex-direction: column; gap: 6px; font-size: var(--fs-md); }
+  .rules b { color: var(--strong); }
+</style>
+</head>
+<body>
+<div class="bar">
+  <b>스타일 가이드 샘플</b>
+  <button id="th">밝게 / 어둡게</button>
+  <span>글꼴은 둘 다 나눔스퀘어 네오, 크기도 같고 <b>색만</b> 다릅니다</span>
+</div>
+<main>
+  <section>
+    <h2 class="sec-t">1. 글자 색 비교</h2>
+    <p class="sec-d">왼쪽은 지금 사이트 색(제목·본문·핵심어가 모두 같은 거의 검정), 오른쪽은 제안 색(진하게 / 본문 / 보조 3단계)입니다.</p>
+    <div class="cmp" id="cmp"></div>
+  </section>
+
+  <section class="guide">
+    <h2 class="sec-t">2. 글꼴·크기</h2>
+    <p class="sec-d">글꼴: 나눔스퀘어 네오 하나(보통 400 · 굵게 700 · 제목 800). 숫자·식만 JetBrains Mono. 줄바꿈은 낱말 단위(keep-all).</p>
+    <div class="gcard">
+      <table class="scale">
+        <tr><th>이름 · 크기</th><th>보기</th><th>쓰는 곳</th></tr>
+        <tr><td>h1 · 30px / 800</td><td class="ex" style="font-size:30px;font-weight:800;letter-spacing:-0.02em;line-height:1.3">명령을 보내도 팔이 안 움직임</td><td class="use">페이지 제목 (한 페이지에 하나)</td></tr>
+        <tr><td>h2 · 20px / 800</td><td class="ex" style="font-size:20px;font-weight:800;letter-spacing:-0.015em">개념: 중력 토크 g(q)</td><td class="use">카드 제목, 첫 화면 단원 제목</td></tr>
+        <tr><td>lg · 17px / 400</td><td style="font-size:17px">팔이 가만히 버티려면 모터가 <b style="color:var(--strong)">중력이 돌리려는 힘</b>만큼 토크를 내야 합니다.</td><td class="use">본문 문단, 페이지 소개, 목록</td></tr>
+        <tr><td>md · 16px / 400·700</td><td style="font-size:16px">실행 · 초기화 · 0.57</td><td class="use">버튼, 입력칸, 사이드바 항목</td></tr>
+        <tr><td>sm · 14px / 400</td><td style="font-size:14px;color:var(--muted)">참고: 경계 근처라 어느 쪽이든 나올 수 있습니다.</td><td class="use">참고·판정 문구, 표, 라벨, 링크 줄</td></tr>
+        <tr><td>xs · 13px / 400·700</td><td style="font-size:13px;color:var(--muted)">joint2 각도 · 정역학 · 4 / 14</td><td class="use">계기판 이름, 표 머리, 칩, 범례, 경로 줄</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="guide">
+    <h2 class="sec-t">3. 색</h2>
+    <p class="sec-d">글자는 회색 3단계 + 강조색 하나. 색은 의미가 있을 때만 씁니다. 대비는 지금 화면(밝게/어둡게)의 카드 바탕 기준입니다.</p>
+    <div class="sw" id="sw"></div>
+    <ul class="rules">
+      <li><b>핵심어는 진한 색 + 굵게</b>로만 구분합니다. 파랑·빨강으로 칠하면 링크나 판정 색과 헷갈립니다.</li>
+      <li><b>파랑은 누를 수 있는 것</b>(링크, 현재 단계, 선택된 버튼)에만 씁니다.</li>
+      <li><b>글 안의 링크는 밑줄 없이 파랑 + 굵게</b>. 마우스를 올리면 글자가 더 두꺼워집니다(글자 폭은 그대로). 파랑을 링크에만 쓰기 때문에 밑줄이 없어도 구분됩니다.</li>
+      <li><b>모터 파랑 · 중력 주황 · 맞음 초록 · 틀림 빨강</b>은 계기판·그래프·판정에서 지금처럼 그대로 씁니다.</li>
+      <li>보조 회색은 한 카드 안에서 본문보다 적게 씁니다. 보조 글씨가 많아지면 다시 흐리고 난잡해 보입니다.</li>
+    </ul>
+  </section>
+</main>
+
+<template id="demo">
+  <div class="demo">
+    <div class="eyebrow"><span class="chip">정역학</span> 중력 토크 g(q)와 모터 최대 토크</div>
+    <h1><span class="n">4</span>명령을 보내도 팔이 안 움직임</h1>
+    <p class="lead">명령을 보내도 관절이 꿈쩍 않거나 조금만 움직입니다. <b>손으로 예측 → 시뮬레이션으로 실험 → 예측과 비교</b> 순서로 원인을 확인합니다.</p>
+    <div class="stepper"><a class="on" href="#"><i>1</i>개념</a><a href="#"><i>2</i>예측</a><a href="#"><i>3</i>실험</a><a href="#"><i>4</i>확인</a></div>
+    <div class="card">
+      <h2><span class="num">1</span>개념: 중력 토크 g(q)</h2>
+      <p class="link">기호가 낯설면 → <a href="#">0 · 기초 개념: g(q)·Σ 읽는 법</a></p>
+      <p>팔이 가만히 버티려면 모터가 <b>중력이 관절을 돌리려는 힘</b>만큼 토크를 내야 합니다. 각 링크의 무게(m·g)에 관절축에서 그 링크 무게중심까지의 <b>수평거리 x</b>를 곱해 모두 더한 값입니다.</p>
+      <div class="formula">g(q) = Σ mᵢ · g · xᵢ   [Nm]</div>
+      <p>팔을 앞으로 수평에 가깝게 뻗을수록 x가 커져서 g(q)가 가장 커집니다. 모터의 <b>최대 토크</b>가 이보다 작으면 팔이 버티지 못합니다.</p>
+      <p class="note">참고: 누군가 XL430 스펙 1.5 Nm를 자릿수를 착각해 0.15 Nm로 입력했습니다. 이 실수 하나로 팔이 왜 버티지 못하는지 계산과 실험으로 확인합니다.</p>
+      <div class="ro"><div><span class="k">joint2 각도</span><span class="v">80.2<small>°</small></span></div><div><span class="k">모터가 내는 토크</span><span class="v m">0.57<small>Nm</small></span></div><div><span class="k">버텨야 할 중력 토크</span><span class="v g">0.57<small>Nm</small></span></div></div>
+    </div>
+    <div class="card">
+      <h2><span class="num">2</span>예측: 뻗은 자세의 중력 토크</h2>
+      <table><tr><th>링크</th><th class="n">질량 m [kg]</th><th class="n">수평거리 x [m]</th></tr>
+        <tr><td>link2 · 위팔</td><td class="n">0.0872</td><td class="n">0.1006</td></tr></table>
+      <div class="in">g(q) 예측 <input value="0.574"> Nm <button>확인</button></div>
+      <div class="fb ok"><b>맞음.</b> 예측 0.574 Nm, 시뮬 0.574 Nm (차이 0%). 다음 단계에서 이 값으로 실험합니다.</div>
+    </div>
+  </div>
+</template>
+<script>
+const cmp = document.getElementById("cmp"), tpl = document.getElementById("demo");
+for (const [cls, t, d] of [["now", "지금 색", "제목·본문·핵심어 같은 색"], ["new", "제안 색", "진하게 / 본문 / 보조 3단계"]]) {
+  const col = document.createElement("div"); col.className = "col " + cls;
+  col.innerHTML = `<div class="lbl">${t} <span>${d}</span></div>`;
+  col.appendChild(tpl.content.firstElementChild.cloneNode(true)); cmp.appendChild(col);
+}
+const SW = [["--strong", "진하게", "제목, 핵심어(굵게), 숫자 결과"], ["--text", "본문", "설명 문단"], ["--muted", "보조", "참고, 표 머리, 라벨, 계기판 이름"],
+  ["--accent", "강조 파랑", "링크, 현재 단계, 선택"], ["--motor", "모터 토크", "계기판·그래프"], ["--gravity", "중력 토크", "계기판·그래프"],
+  ["--good", "맞음", "판정"], ["--bad", "틀림", "판정"]];
+const guide = document.querySelector(".guide"), sw = document.getElementById("sw");
+function lum(c) { const [r, g, b] = c.match(/\d+/g).slice(0, 3).map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; }
+function ratio(a, b) { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); }
+function hex(c) { return "#" + c.match(/\d+/g).slice(0, 3).map(v => (+v).toString(16).padStart(2, "0")).join(""); }
+function drawSw() {
+  sw.innerHTML = "";
+  const probe = document.createElement("span"); guide.appendChild(probe);
+  probe.style.color = "var(--panel)"; const bg = getComputedStyle(probe).color;
+  for (const [v, nm, use] of SW) {
+    probe.style.color = `var(${v})`; const c = getComputedStyle(probe).color;
+    const el = document.createElement("div");
+    el.innerHTML = `<div class="chipc" style="color:${c}">가나다 Aa 0.57</div><div class="meta"><b>${nm}</b> <code>${hex(c)}</code> · 대비 ${ratio(c, bg).toFixed(1)} : 1<br>${use}</div>`;
+    sw.appendChild(el);
+  }
+  probe.remove();
+}
+drawSw();
+document.getElementById("th").onclick = () => { const r = document.documentElement; r.dataset.theme = r.dataset.theme === "dark" ? "light" : "dark"; drawSw(); };
+</script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>한글 글꼴 고르기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;700&family=Noto+Sans+KR:wght@400;700&family=Gothic+A1:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2.0.5/fonts/variable/woff2/SUIT-Variable.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eunchurn/NanumSquareNeo@0.0.6/nanumsquareneo.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@1.0/nanumbarungothicsubset.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/spoqa-han-sans@3.3.0/css/SpoqaHanSansNeo.css">
+<style>
+  :root { --bg:#f3f5f7; --panel:#fff; --ink:#18202a; --muted:#4f5a66; --line:#d9dfe5; --soft:#e8eef6; --accent:#1f6feb; }
+  :root[data-theme="dark"] { --bg:#11161c; --panel:#19212a; --ink:#e6ebf0; --muted:#aab4bf; --line:#2c3742; --soft:#1f2b38; --accent:#5b9dff; color-scheme:dark; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px system-ui, "Malgun Gothic", sans-serif; }
+  .bar { position:sticky; top:0; z-index:2; display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; padding:10px 20px; background:var(--panel); border-bottom:1px solid var(--line); }
+  .bar b { font-size:16px; } .bar button { cursor:pointer; padding:5px 12px; border:1px solid var(--line); border-radius:8px; background:var(--bg); color:var(--ink); }
+  .bar .tip { color:var(--muted); font-size:13px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 520px), 1fr)); gap:18px; padding:20px; }
+  .f { font-weight:var(--wn, 400); background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:22px 24px 24px; word-break:keep-all; overflow-wrap:break-word; }
+  .f header { display:flex; justify-content:space-between; align-items:baseline; gap:10px; font:13px system-ui, sans-serif; color:var(--muted);
+    border-bottom:1px dashed var(--line); padding-bottom:10px; margin-bottom:16px; }
+  .f header b { font-size:15px; color:var(--ink); } .f header .st.ok { color:#15803d; } .f header .st.no { color:#b91c1c; }
+  .f .tag { font-size:12px; color:var(--muted); }
+  .f h1 { font-size:30px; line-height:1.3; letter-spacing:-0.02em; margin:0 0 6px; font-weight:var(--wh, 700); }
+  .f b { font-weight:var(--wb, 700); }
+  .f .lead { font-size:17px; line-height:1.75; color:var(--muted); margin:0 0 18px; }
+  .f h2 { font-size:20px; line-height:1.4; letter-spacing:-0.015em; margin:0 0 10px; font-weight:var(--wh, 700); }
+  .f p { font-size:17px; line-height:1.75; margin:0 0 10px; }
+  .f .note { font-size:14px; line-height:1.7; color:var(--muted); }
+  .f .formula { font:600 17px "JetBrains Mono", monospace; background:var(--soft); padding:12px 14px; border-radius:8px; margin:12px 0; }
+  .f .row { display:flex; gap:18px; flex-wrap:wrap; font-size:13px; color:var(--muted); margin-top:12px; }
+  .f .row span b { display:block; font-size:20px; color:var(--ink); font-variant-numeric:tabular-nums; }
+  .f .side { margin-top:14px; display:flex; flex-direction:column; gap:2px; font-size:15px; }
+  .f .side i { font-style:normal; color:var(--muted); font-size:13px; margin-right:8px; }
+</style>
+</head>
+<body>
+<div class="bar">
+  <b>한글 글꼴 후보 9개</b>
+  <button id="th">밝게 / 어둡게</button>
+  <span class="tip">모두 무료(OFL 등) 웹 글꼴. 크기는 수정안 기준(제목 30 · 카드 제목 20 · 본문 17 · 보조 14 · 작은 글씨 13px)</span>
+</div>
+<div class="grid" id="g"></div>
+<template id="tpl">
+  <article class="f">
+    <header><span><b class="nm"></b> <span class="tag"></span></span><span class="st">확인 중…</span></header>
+    <h1>4 명령을 보내도 팔이 안 움직임</h1>
+    <p class="lead">명령을 보내도 관절이 꿈쩍 않거나 조금만 움직입니다. 팔을 뻗은 자세에서 특히 심합니다.</p>
+    <h2>1 개념: 중력 토크 g(q)</h2>
+    <p>팔이 가만히 버티려면 모터가 <b>중력이 관절을 돌리려는 힘</b>만큼 토크를 내야 합니다. 각 링크의 무게(m·g)에 관절축에서 그 링크 무게중심까지의 <b>수평거리 x</b>를 곱해 모두 더한 값입니다.</p>
+    <div class="formula">g(q) = Σ mᵢ · g · xᵢ   [Nm]</div>
+    <p class="note">참고: 누군가 XL430 스펙 1.5 Nm를 자릿수를 착각해 0.15 Nm로 입력했습니다. 이 실수 하나로 팔이 왜 버티지 못하는지 계산과 실험으로 확인합니다.</p>
+    <div class="row"><span>joint2 각도<b>80.2°</b></span><span>모터 토크<b>0.57 Nm</b></span><span>손끝 물체<b>235 g</b></span></div>
+    <div class="side"><span><i>1</i>FK: 손끝은 어디에?</span><span><i>2</i>IK: 공을 잡으려면 몇 도?</span><span><i>3</i>손끝 속도와 특이점</span></div>
+  </article>
+</template>
+<script>
+const FONTS = [
+  ["IBM Plex Sans KR", "지금 쓰는 글꼴", "IBM Plex Sans KR"],
+  ["NanumSquare Neo", "네모 반듯, 요즘 많이 씀 (네이버 배포)", "NanumSquareNeo", 300, 500, 700],
+  ["Pretendard", "앞 수정안 · 애플 시스템 글꼴 느낌", "Pretendard Variable"],
+  ["SUIT", "둥글고 단정, 화면용", "SUIT Variable"],
+  ["Wanted Sans", "Pretendard 계열, 조금 더 단단함", "Wanted Sans Variable"],
+  ["Spoqa Han Sans Neo", "가볍고 또렷, 서비스 화면에 많이 씀", "Spoqa Han Sans Neo"],
+  ["Noto Sans KR", "구글 기본, 무난", "Noto Sans KR"],
+  ["Gothic A1", "넓고 시원한 고딕", "Gothic A1"],
+  ["NanumBarunGothic", "나눔고딕보다 반듯하고 화면에서 또렷함", "NanumBarunGothic"],
+];
+const g = document.getElementById("g"), tpl = document.getElementById("tpl");
+for (const [nm, tag, fam, wn, wb, wh] of FONTS) {
+  const n = tpl.content.firstElementChild.cloneNode(true);
+  n.style.fontFamily = `"${fam}", sans-serif`;
+  n.querySelector(".nm").textContent = nm; n.querySelector(".tag").textContent = tag;
+  if (wn) { n.style.setProperty("--wn", wn); n.style.setProperty("--wb", wb); n.style.setProperty("--wh", wh); }
+  n.dataset.fam = fam; g.appendChild(n);
+}
+function checkAll() {
+  for (const n of g.children) {
+    const ok = document.fonts.check(`${n.style.getPropertyValue("--wn") || 400} 17px "${n.dataset.fam}"`, "가") && [...document.fonts].some(f => f.family.replace(/"/g, "") === n.dataset.fam && f.status === "loaded");
+    const st = n.querySelector(".st"); st.textContent = ok ? "불러옴" : "불러오기 실패"; st.className = "st " + (ok ? "ok" : "no");
+  }
+}
+document.fonts.ready.then(() => { setTimeout(checkAll, 800); setTimeout(checkAll, 4000); });
+document.getElementById("th").onclick = () => {
+  const r = document.documentElement; r.dataset.theme = r.dataset.theme === "dark" ? "light" : "dark";
+};
+</script>
+</body>
+</html>
