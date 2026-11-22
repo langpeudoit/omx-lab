@@ -20,11 +20,14 @@
    Copyright © 2010-2021 three.js authors — MIT License (lib/LICENSE-three.txt)
    - lib/three.min.js, lib/OrbitControls.js : 수정 없이 그대로.
 
+4. 나눔스퀘어 네오 (NanumSquare Neo)
+   https://hangeul.naver.com/font
+   Copyright (c) 2022 NAVER Corp. — SIL Open Font License 1.1 (common/fonts/OFL.txt)
+   - common/fonts/NanumSquareNeo-*.woff2 : 네이버 공식 배포 파일(웹폰트/woff2)을 수정 없이 복사 (이름만 바꿈).
+
 이 저장소에 포함하지 않고 웹에서 불러 쓰는 글꼴:
-   - 나눔스퀘어 네오 (NanumSquare Neo) — Copyright NAVER Corporation, SIL Open Font License 1.1
-     (cdn.jsdelivr.net/gh/eunchurn/NanumSquareNeo 배포본)
    - JetBrains Mono — Copyright JetBrains s.r.o., SIL Open Font License 1.1 (Google Fonts)
 
-4. common/logo.jpg : 랑프 두잇(Langpeu) 채널 로고. 제작자 소유이며 위 라이선스 대상이 아닙니다.
+5. common/logo.jpg : 랑프 두잇(Langpeu) 채널 로고. 제작자 소유이며 위 라이선스 대상이 아닙니다.
 
 Apache License 2.0 전문은 LICENSE 파일에 있습니다.

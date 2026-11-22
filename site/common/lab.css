@@ -2,13 +2,13 @@
    Layout: 왼쪽에 고정된 시뮬레이션 창(계기판 포함), 오른쪽에 순서대로 진행하는 단계 카드. 좁은 화면에서는 위아래로 쌓임
    글꼴·크기·색 규칙은 docs/style-guide.md (글꼴 나눔스퀘어 네오, 크기 6단계 --fs-*, 글자 색 --ink/--text/--muted) */
 
-/* 나눔스퀘어 네오 (OFL, 네이버). 원래 배포본은 보통=300·굵게=500 처럼 굵기 번호가 달라서 표준 번호로 다시 붙임 → 보통 400, 굵게 700, 제목 800 */
+/* 나눔스퀘어 네오 (OFL, 네이버, common/fonts/ 에 직접 넣음 — OFL.txt). 원래 배포본은 보통=300·굵게=500 처럼 굵기 번호가 달라서 표준 번호로 다시 붙임 → 보통 400, 굵게 700, 제목 800 */
 @font-face { font-family: "NanumSquare Neo"; font-weight: 400; font-display: swap;
-  src: url(https://cdn.jsdelivr.net/gh/eunchurn/NanumSquareNeo@0.0.6/woff2/NanumSquareNeoTTF-bRg.woff2) format("woff2"); }
+  src: url(fonts/NanumSquareNeo-bRg.woff2) format("woff2"); }
 @font-face { font-family: "NanumSquare Neo"; font-weight: 700; font-display: swap;
-  src: url(https://cdn.jsdelivr.net/gh/eunchurn/NanumSquareNeo@0.0.6/woff2/NanumSquareNeoTTF-cBd.woff2) format("woff2"); }
+  src: url(fonts/NanumSquareNeo-cBd.woff2) format("woff2"); }
 @font-face { font-family: "NanumSquare Neo"; font-weight: 800; font-display: swap;
-  src: url(https://cdn.jsdelivr.net/gh/eunchurn/NanumSquareNeo@0.0.6/woff2/NanumSquareNeoTTF-dEb.woff2) format("woff2"); }
+  src: url(fonts/NanumSquareNeo-dEb.woff2) format("woff2"); }
 :root {
   --bg: #f3f5f7;
   --panel: #ffffff;

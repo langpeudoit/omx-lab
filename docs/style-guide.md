@@ -13,8 +13,9 @@
 - 글꼴은 하나만 쓴다. 예전 제목용 Space Grotesk 는 한글이 없어 한 제목 안에서 글꼴이 섞였음 → 뺌. `--font-head` 는 `--font-body` 와 같음.
 - 나눔스퀘어 네오 원래 배포본은 보통=300, 굵게=500, 더 굵게=700 이라 그대로 쓰면 본문이 굵게 나온다.
   `lab.css` 의 `@font-face` 에서 **표준 번호(400/700/800)로 다시 붙였으니** CSS 에는 400/700/800 을 쓴다. 600 을 쓰면 700(굵게)으로 보인다.
-- 불러오는 곳: jsdelivr 배포본(`eunchurn/NanumSquareNeo@0.0.6`, woff2, 굵기 하나 약 390 KB, 세 굵기 약 1.2 MB).
-  네이버 공식 주소(hangeul.pstatic.net)는 다른 사이트에서 불러오지 못하게 막혀 있음.
+- 글꼴 파일은 사이트 안에 직접 넣었다: `site/common/fonts/NanumSquareNeo-{bRg,cBd,dEb}.woff2` (보통·굵게·제목, 하나 약 390 KB, 합계 약 1.2 MB) + `OFL.txt`.
+  원본은 네이버 공식 배포 파일 `NaverNanumSquareNeo.zip` 의 `웹폰트/woff2` (수정 없음, 이름만 바꿈. jsdelivr `eunchurn/NanumSquareNeo@0.0.6` 과 같은 파일).
+  다른 굵기가 필요하면 같은 zip 의 `NanumSquareNeoTTF-aLt`(가늘게)·`eHv`(아주 굵게) 를 쓰고, `lab.css` 의 `@font-face` 에 표준 번호(300/900)로 붙인다.
 - 한국어 줄바꿈은 낱말 단위: `body { word-break: keep-all; overflow-wrap: break-word; }`
 
 ## 2. 글자 크기 (6단계, 이 밖의 크기는 쓰지 않음)

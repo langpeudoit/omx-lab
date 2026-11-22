@@ -1,10 +1,8 @@
 /* 나눔스퀘어 네오 (OFL, 네이버). 원래 배포본은 보통=300·굵게=500 처럼 굵기 번호가 달라서
    여기서는 표준 번호로 다시 붙임 → 보통 400, 굵게 700, 더 굵게 800 으로 쓰면 됨 */
-@font-face { font-family: "NanumSquare Neo"; font-weight: 300; font-display: swap;
-  src: url(https://cdn.jsdelivr.net/gh/eunchurn/NanumSquareNeo@0.0.6/woff2/NanumSquareNeoTTF-aLt.woff2) format("woff2"); }
 @font-face { font-family: "NanumSquare Neo"; font-weight: 400; font-display: swap;
-  src: url(https://cdn.jsdelivr.net/gh/eunchurn/NanumSquareNeo@0.0.6/woff2/NanumSquareNeoTTF-bRg.woff2) format("woff2"); }
+  src: url(../common/fonts/NanumSquareNeo-bRg.woff2) format("woff2"); }
 @font-face { font-family: "NanumSquare Neo"; font-weight: 700; font-display: swap;
-  src: url(https://cdn.jsdelivr.net/gh/eunchurn/NanumSquareNeo@0.0.6/woff2/NanumSquareNeoTTF-cBd.woff2) format("woff2"); }
+  src: url(../common/fonts/NanumSquareNeo-cBd.woff2) format("woff2"); }
 @font-face { font-family: "NanumSquare Neo"; font-weight: 800; font-display: swap;
-  src: url(https://cdn.jsdelivr.net/gh/eunchurn/NanumSquareNeo@0.0.6/woff2/NanumSquareNeoTTF-dEb.woff2) format("woff2"); }
+  src: url(../common/fonts/NanumSquareNeo-dEb.woff2) format("woff2"); }
