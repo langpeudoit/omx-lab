@@ -1,22 +1,26 @@
 # 피지컬AI 실험실 — 작업 노트
 
-저장소: 비공개 `langpeu/omx-lab` = 로컬 `~/isaac/omx_isaac_lab/omx-lab/`. 사이트: https://omx-lab.pages.dev/ (Cloudflare Pages)
+저장소: 비공개 `langpeu/omx-lab` = 로컬 `~/omx-lab/` (2026-11-22부터. 그 전 위치 ~/isaac/omx_isaac_lab/omx-lab 은 삭제됨). 사이트: https://omx-lab.pages.dev/ (Cloudflare Pages)
 
 **경로 규칙**: 저장소 루트는 작업 공간(CLAUDE.md, docs/), **배포되는 건 `site/` 폴더뿐**. 아래 노트의 `common/lab.js`, `tools/...`, 문제 폴더(`torque/` 등)는 모두 `site/` 기준. 메모·설계·플랜은 `site/` 밖에 둔다 (site 안에 두면 공개됨). 설계 문서는 `docs/`, 구현 계획은 `docs/plans/`.
 
-Isaac Sim 실습(lab01~10.py, usd_lab) 노트는 `../omx_lab/CLAUDE.md`.
+Isaac Sim 실습 폴더(omx_lab: lab01~10.py, usd_lab, mujoco_web)는 2026-11-22 사용자 결정으로 삭제됨. 아래 노트에 그 이름이 나오면 옛 기록.
 
 ## 지켜야 할 것
 
-- 한국어로 대화한다. 사용자는 입문자이므로 단계별로 안내한다.
+- **모든 답변은 한국어로** 쓴다. 최종 보고, 질문, 중간 안내, 긴 작업 보고·계획 요약도 예외 없음. 코드·명령·파일 경로만 원문 그대로. (영어로 보고했다가 "한글로 말해라" 지적받음)
+- 사용자는 입문자이므로 단계별로 안내한다.
+- **실험 단계는 학생이 계산한 예측값을 바로 확인하는 방식**: 2단계 예측 ×0.9 / 그대로 / ×1.1 세 번 실행해 양 끝이 기대대로면 맞음 (공통 `OmxLab.check3`). 경계 근처에서 결과가 뒤섞이면(관통처럼) 여러 값을 훑어 처음 바뀌는 지점으로 판정.
+  - 이유: "계산한 값이 0.57인데 그 외의 값을 넣으라고 하니 이상하다"는 지적. 관계없는 값부터 넣어 경계를 좁히는 이분법은 싫어함. 판정 문구는 맞았는지 분명히 알려 줄 것
+  - 새 문제를 만들 때 정답 예측을 넣으면 실제로 "맞음"이 나오는지 시뮬로 먼저 확인. 자유 실험 슬라이더는 `<details>` 선택 항목으로
 - 목표는 **동역학 개념을 하나씩 익히는 것**. 상황 하나씩 끝까지(개념 → 실행 → 수정 → 채점) 완성한 뒤 다음으로 넘어간다.
 - 코드나 샘플 파일을 만들기 전에 먼저 사용자에게 확인한다.
-- `../open_manipulator` (ROBOTIS 원본 저장소)는 수정하지 않는다.
+- `~/open_manipulator` (ROBOTIS 원본 저장소, 모델 다시 만들 때만 필요: `git clone https://github.com/ROBOTIS-GIT/open_manipulator.git ~/open_manipulator`)는 수정하지 않는다.
 - sudo 비밀번호는 사용자가 직접 입력한다.
 
 ## ▶ 이어서 할 일 (2026-11-21 저녁 기준, 여기부터 읽기)
 
-**지금 상태**: 피지컬AI 실험실 **https://omx-lab.pages.dev/** (Cloudflare Pages, 2026-11-22 이사). 저장소 = 비공개 `langpeu/omx-lab` = 로컬 `~/isaac/omx_isaac_lab/omx-lab/` 자체. 옛 주소 langpeu.github.io/omx-lab/ 는 2026-11-22 블로그 저장소에서 삭제함(404, 사용자 결정).
+**지금 상태**: 피지컬AI 실험실 **https://omx-lab.pages.dev/** (Cloudflare Pages, 2026-11-22 이사). 저장소 = 비공개 `langpeu/omx-lab` = 로컬 `~/omx-lab/`. 옛 주소 langpeu.github.io/omx-lab/ 는 2026-11-22 블로그 저장소에서 삭제함(404, 사용자 결정).
 - 22개 중 **14개 완성**: 0 기초, 1 FK, 2 IK, 3 특이점, 4 토크, 5 페이로드, 7 미끄러짐, 8 넘어짐, 13 떨림, 14 처짐, 16 지연, 19 발산, 20 관통, 21 Sim2Real + 도구 2개
 - 준비 중 8개: 6 push(힘 방향 Jᵀ·F), 9 inertia(자세별 관성), 10 pendulum(손목 진자), 11 coupling(관절 결합), 12 centrifugal(원심력), 15 pid(적분), 17 speed-torque(토크-속도), 18 current(전류) + 도구 FK·IK 계산기
 - 실험 방식: 2단계 예측값으로 ×0.9 / 그대로 / ×1.1 세 번 실행해 판정 (`OmxLab.check3`). 관통만 0.6~1.4배 9번
@@ -29,9 +33,9 @@ Isaac Sim 실습(lab01~10.py, usd_lab) 노트는 `../omx_lab/CLAUDE.md`.
 4. 쇼츠: 아직 안 만듦. 이론 설명 + 상황 4 문제 내기 구성 제안해 둠
 
 **작업 방법 메모**
-- 로컬 확인: `cd ~/isaac/omx_isaac_lab/omx-lab/site && python3 -m http.server 8765` → http://localhost:8765/ (사용자에게는 Ctrl+Shift+R 안내)
+- 로컬 확인: `cd ~/omx-lab/site && python3 -m http.server 8765` → http://localhost:8765/ (사용자에게는 Ctrl+Shift+R 안내)
 - 검사: `python3 site/tools/check_site.py`, 브라우저 `tools/test.html`(42개)·`tools/calc_test.html`(13개). 헤드리스 Firefox Marionette 스크립트 mn.py 는 스크래치에 있었음(지워졌으면 다시 작성: 프로필 ~/snap/firefox/common/omxtest/prof, 캐시 끔, ExecuteAsyncScript)
-- 배포: `cd ~/isaac/omx_isaac_lab/omx-lab && git commit && git push` → Cloudflare Pages 가 `site/` 를 자동 배포(약 1분). 배포는 사용자 요청이 있을 때만. 커밋에 Claude 표시(Co-Authored-By 등) 넣지 말 것
+- 배포: `cd ~/omx-lab && git commit && git push` → Cloudflare Pages 가 `site/` 를 자동 배포(약 1분). 배포는 사용자 요청이 있을 때만. 커밋에 Claude 표시(Co-Authored-By 등) 넣지 말 것
 - pkill -f "http.server" 는 자기 셸까지 죽임 → `pgrep -f "^python3 -m http.server 8765" | xargs -r kill`
 - 사용자 선호: 모든 답변 한국어, 계산한 값을 바로 확인하는 실험을 원함(이분법 싫어함), 인위적 받침대 금지, 원본 Claude Docs 문서는 더 이상 안 씀
 
@@ -50,7 +54,7 @@ Isaac Sim 실습(lab01~10.py, usd_lab) 노트는 `../omx_lab/CLAUDE.md`.
 
 - **공개 방식 (2026-11-22 변경): 비공개 GitHub 저장소 `langpeu/omx-lab` → Cloudflare Pages 프로젝트 `omx-lab` → https://omx-lab.pages.dev/**
   - Pages 설정: 프레임워크 없음, 빌드 명령 `rm -rf site/tools`, 출력 디렉터리 `site`, 브랜치 main. push 하면 자동 배포. (Workers 아님 — 사용자가 Pages 원함. wrangler 설정 파일 넣지 말 것)
-  - 저장소 구조 (2026-11-22): 루트 = CLAUDE.md, README.md, docs/ / `site/` = 사이트 전체 + site/tools/(개발 도구, 배포 때 지움). tools 는 site 안에 있어서 `../torque/` 같은 상대 경로 그대로. build_xml.py 는 `site/../../open_manipulator` 를 읽음
+  - 저장소 구조 (2026-11-22): 루트 = CLAUDE.md, README.md, docs/ / `site/` = 사이트 전체 + site/tools/(개발 도구, 배포 때 지움). tools 는 site 안에 있어서 `../torque/` 같은 상대 경로 그대로. build_xml.py 는 `site/../../open_manipulator` = `~/open_manipulator` 를 읽음
   - 커밋 기록은 블로그 저장소에서 omx-lab 부분만 뽑아 옮김(7개)
 - (옛 방식, 2026-11-21~22, **삭제됨** 블로그 커밋 84c1649) 블로그 저장소 `langpeu/langpeu.github.io` 안의 `omx-lab/` 폴더 → https://langpeu.github.io/omx-lab/ . 아래는 그때 메모
   (저장소에 CNAME=lourcode.kr 파일이 있지만 Actions 배포라 무시됨. 실제 사이트는 langpeu.github.io 그대로. lourcode.kr 은 사용자 도메인 아님 — 다시 언급하지 말 것)
@@ -60,7 +64,7 @@ Isaac Sim 실습(lab01~10.py, usd_lab) 노트는 `../omx_lab/CLAUDE.md`.
   - **배포 실행(Claude 가 직접 가능, 2026-11-21 확인)**: `gh api repos/langpeu/langpeu.github.io/dispatches -f event_type=RUN_WORKFLOW_DISPATCH` → `gh run list` / `gh run watch <id> --exit-status` (약 1분). gh 는 langpeu 계정으로 로그인됨
   - 빌드에 htmlproofer --check-html 이 있음. omx-lab 포함해 Docker(ruby:3.1)로 똑같이 돌려 통과 확인 (2026-11-21)
   - 로컬 클론: `~/isaac/omx_isaac_lab/langpeu.github.io` (shallow). 갱신: `rsync -a --delete --delete-excluded --exclude tools/ ../omx-lab/ omx-lab/` 후 커밋
-- **소스 = `~/isaac/omx_isaac_lab/omx-lab/site/`** (omx-lab 폴더가 곧 git 저장소 langpeu/omx-lab. rsync 불필요)
+- **소스 = `~/omx-lab/site/`** (omx-lab 폴더가 곧 git 저장소 langpeu/omx-lab. rsync 불필요)
   - `index.html` 첫 화면(문제 목록), `common/lab.css` 공통 디자인, `common/lab.js` 공통 코드 (`window.OmxLab`)
     - **(2026-11-21 재정리) 아래 "피지컬AI 실험실 구조" 절이 최신. 이 절의 pNN 폴더·상황 번호는 옛 것**
     - `OmxLab.start()` → lab: `run({setup, control, duration, judge, done})`, `resetPose()`, `showPose(q)`, `showLever(bodyIds, pivotBody)`, `jointGauge(el, {...})`, `onFrame`, `onBusy`, `setPayload(kg)`
@@ -68,7 +72,7 @@ Isaac Sim 실습(lab01~10.py, usd_lab) 노트는 `../omx_lab/CLAUDE.md`.
     - 꼬리말(출처, 비공식 표기)은 `<footer id="foot">` 가 있으면 자동
   - `p01-torque/index.html`(내용) + `p01.js`(실험). 저장 키 `omx-lab-1`
   - `lib/`: mujoco.js/.wasm (npm `@mujoco/mujoco` 3.17.0), three.min.js r128, OrbitControls.js 0.128.0, LICENSE-three.txt
-  - `model/`: omx_lab.xml + meshes/*.stl ← `python3 tools/build_xml.py` 로 ROBOTIS 원본(../open_manipulator)에서 다시 생성
+  - `model/`: omx_lab.xml + meshes/*.stl ← `python3 tools/build_xml.py` 로 ROBOTIS 원본(`~/open_manipulator` = 저장소 옆)에서 다시 생성
   - `LICENSE`(Apache-2.0), `NOTICE`(ROBOTIS·MuJoCo·three.js 출처), `README.md`, `.nojekyll`
 - 이전 폴더 `omx_lab/mujoco_web/` (단일 index.html + make_site.py → site/) 는 **더 이상 쓰지 않음**. 사용자 서버 https://langpeu.com/omx_pysical/mujoco_web/site/ 에 올라간 것도 이전 버전
 - 배포 시 주의 (겪은 문제): 아티팩트는 doctype/charset/[hidden] 기본 스타일을 자동으로 붙여 줬으나 일반 서버에서는 없음 → 한글 깨짐, overlay 안 사라짐. 지금 소스에는 다 들어 있음. file:// 로 열면 fetch 막힘
