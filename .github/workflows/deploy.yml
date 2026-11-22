@@ -1,0 +1,19 @@
+# main 에 push 되면 Cloudflare Pages 배포 훅을 불러 사이트를 다시 배포한다.
+# 훅 주소는 저장소 비밀값 CF_DEPLOY_HOOK 에 있다 (주소를 아는 사람은 누구나 배포를 일으킬 수 있으므로 파일에 쓰지 않음).
+name: Cloudflare Pages 배포
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 배포 훅 호출
+        env:
+          HOOK: ${{ secrets.CF_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then echo "CF_DEPLOY_HOOK 비밀값이 없습니다"; exit 1; fi
+          curl -fsS -X POST "$HOOK"
