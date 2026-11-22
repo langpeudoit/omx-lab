@@ -1,0 +1,7 @@
+.git
+.gitignore
+.assetsignore
+.nojekyll
+wrangler.jsonc
+tools
+__pycache__
