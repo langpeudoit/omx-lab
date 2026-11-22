@@ -16,7 +16,7 @@ Isaac Sim 실습(lab01~10.py, usd_lab) 노트는 `../omx_lab/CLAUDE.md`.
 
 ## ▶ 이어서 할 일 (2026-11-21 저녁 기준, 여기부터 읽기)
 
-**지금 상태**: 피지컬AI 실험실 **https://omx-lab.pages.dev/** (Cloudflare Pages, 2026-11-22 이사). 저장소 = 비공개 `langpeu/omx-lab` = 로컬 `~/isaac/omx_isaac_lab/omx-lab/` 자체. 옛 주소 langpeu.github.io/omx-lab/ 정리는 아래 '공개 방식' 참고.
+**지금 상태**: 피지컬AI 실험실 **https://omx-lab.pages.dev/** (Cloudflare Pages, 2026-11-22 이사). 저장소 = 비공개 `langpeu/omx-lab` = 로컬 `~/isaac/omx_isaac_lab/omx-lab/` 자체. 옛 주소 langpeu.github.io/omx-lab/ 는 2026-11-22 블로그 저장소에서 삭제함(404, 사용자 결정).
 - 22개 중 **14개 완성**: 0 기초, 1 FK, 2 IK, 3 특이점, 4 토크, 5 페이로드, 7 미끄러짐, 8 넘어짐, 13 떨림, 14 처짐, 16 지연, 19 발산, 20 관통, 21 Sim2Real + 도구 2개
 - 준비 중 8개: 6 push(힘 방향 Jᵀ·F), 9 inertia(자세별 관성), 10 pendulum(손목 진자), 11 coupling(관절 결합), 12 centrifugal(원심력), 15 pid(적분), 17 speed-torque(토크-속도), 18 current(전류) + 도구 FK·IK 계산기
 - 실험 방식: 2단계 예측값으로 ×0.9 / 그대로 / ×1.1 세 번 실행해 판정 (`OmxLab.check3`). 관통만 0.6~1.4배 9번
@@ -52,7 +52,7 @@ Isaac Sim 실습(lab01~10.py, usd_lab) 노트는 `../omx_lab/CLAUDE.md`.
   - Pages 설정: 프레임워크 없음, 빌드 명령 `rm -rf site/tools`, 출력 디렉터리 `site`, 브랜치 main. push 하면 자동 배포. (Workers 아님 — 사용자가 Pages 원함. wrangler 설정 파일 넣지 말 것)
   - 저장소 구조 (2026-11-22): 루트 = CLAUDE.md, README.md, docs/ / `site/` = 사이트 전체 + site/tools/(개발 도구, 배포 때 지움). tools 는 site 안에 있어서 `../torque/` 같은 상대 경로 그대로. build_xml.py 는 `site/../../open_manipulator` 를 읽음
   - 커밋 기록은 블로그 저장소에서 omx-lab 부분만 뽑아 옮김(7개)
-- (옛 방식, 2026-11-21~22) 블로그 저장소 `langpeu/langpeu.github.io` 안의 `omx-lab/` 폴더 → https://langpeu.github.io/omx-lab/ . 아래는 그때 메모
+- (옛 방식, 2026-11-21~22, **삭제됨** 블로그 커밋 84c1649) 블로그 저장소 `langpeu/langpeu.github.io` 안의 `omx-lab/` 폴더 → https://langpeu.github.io/omx-lab/ . 아래는 그때 메모
   (저장소에 CNAME=lourcode.kr 파일이 있지만 Actions 배포라 무시됨. 실제 사이트는 langpeu.github.io 그대로. lourcode.kr 은 사용자 도메인 아님 — 다시 언급하지 말 것)
   목적: 학습자료로 문제를 하나씩 추가하고 유튜브 쇼츠로 알림.
   - 블로그 = Jekyll Chirpy, Notion 연동. 배포 워크플로(.github/workflows/pages-deploy.yml)는 **repository_dispatch 에서만 실행** → push만으로는 배포 안 됨
