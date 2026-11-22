@@ -48,7 +48,7 @@
       <div class="tblwrap"><table class="gloss">
         <thead><tr><th>기호</th><th>읽는 법</th><th>이름</th><th>뜻</th></tr></thead>
         <tbody>
-          <tr id="s-q"><td class="sym">q</td><td>큐 (q)</td><td><b>관절각</b></td><td>각 관절이 꺾인 각도 (단위 rad)</td></tr>
+          <tr id="s-q"><td class="sym">q</td><td>큐 (q)</td><td><b>관절각</b></td><td>각 관절이 꺾인 각도 (단위 rad). 기구학 문제에서는 같은 각을 <b>θ</b>(도 단위)로 씀 → <a href="#s-theta">θ</a></td></tr>
           <tr id="s-qd"><td class="sym"><span class="d1">q</span></td><td>큐 닷 (q dot)</td><td><b>관절 속도</b></td><td>점 하나 = 시간으로 한 번 미분. q가 얼마나 빨리 변하는지</td></tr>
           <tr id="s-qdd"><td class="sym"><span class="d2">q</span></td><td>큐 더블 닷 (q double dot)</td><td><b>관절 가속도</b></td><td>점 두 개 = 두 번 미분. 속도가 얼마나 빨리 변하는지</td></tr>
           <tr id="s-of"><td class="sym">(q)</td><td>오브 큐 (of q)</td><td><b>자세에 따라 달라짐</b></td><td>괄호 안에 q가 있으면 자세마다 값이 달라짐</td></tr>
@@ -56,7 +56,8 @@
           <tr id="s-c"><td class="sym">C(q, <span class="d1">q</span>)</td><td>씨 오브 큐, 큐 닷</td><td><b>코리올리 행렬</b></td><td>빠르게 움직일 때 생기는 덤 힘을 만드는 항</td></tr>
           <tr id="s-g"><td class="sym">g(q)</td><td>지 오브 큐 (g of q)</td><td><b>중력 토크</b> (중력 벡터)</td><td>가만히 있어도 버텨야 하는 힘. 그냥 <b>g</b>만 쓰면 중력가속도 9.81 m/s²</td></tr>
           <tr id="s-tau"><td class="sym">τ</td><td>타우 (tau)</td><td><b>모터 토크</b></td><td>모터가 관절을 돌리는 힘. <span class="warn"><a data-ref="contact" href="../contact/">상황 {n}</a>에서는 같은 글자가 ‘접촉 시간 상수’(아래 용어 사전)</span></td></tr>
-          <tr id="s-j"><td class="sym">Jᵀ</td><td>제이 트랜스포즈 (J transpose)</td><td><b>자코비안 전치</b></td><td>손끝에 받은 힘을 관절 토크로 바꿔 주는 변환</td></tr>
+          <tr id="s-j"><td class="sym">Jᵀ</td><td>제이 트랜스포즈 (J transpose)</td><td><b>자코비안 전치</b></td><td>손끝에 받은 힘을 관절 토크로 바꿔 주는 변환 (τ = Jᵀ·F)</td></tr>
+          <tr id="s-jac"><td class="sym">J(q)</td><td>제이 오브 큐 (J of q)</td><td><b>자코비안</b></td><td>관절 속도를 손끝 속도로 바꿔 주는 표 (손끝 속도 = J·<span class="d1">q</span>). 자세마다 달라짐. 이것을 뒤집은(전치) 것이 Jᵀ</td></tr>
           <tr id="s-f"><td class="sym">F<sub>ext</sub></td><td>에프 익스터널 (F external)</td><td><b>외력</b></td><td>바깥에서 로봇에 가해지는 힘</td></tr>
           <tr id="s-k"><td class="sym">Kp, Kd</td><td>케이피, 케이디 (K p, K d)</td><td><b>비례 게인, 미분 게인</b></td><td>스프링 세기와 브레이크 세기</td></tr>
           <tr id="s-mu"><td class="sym">μ</td><td>뮤 (mu)</td><td><b>마찰계수</b></td><td>표면이 덜 미끄러운 정도</td></tr>
@@ -66,13 +67,18 @@
       <div class="tblwrap"><table class="gloss">
         <thead><tr><th>기호</th><th>읽는 법</th><th>뜻</th><th>상황</th></tr></thead>
         <tbody>
+          <tr id="s-theta"><td class="sym">θ1 ~ θ4</td><td>세타 원 ~ 세타 포 (theta)</td><td><b>관절 각도</b>. q와 같은 것을 도(°)로 쓴 것. 숫자는 joint 번호 (θ2 = joint2 어깨). 아래 <a href="#screen">관절 표</a>에 방향이 있음</td><td class="go"><a data-ref="fk" href="../fk/">{n}</a> <a data-ref="ik" href="../ik/">{n}</a> <a data-ref="singularity" href="../singularity/">{n}</a></td></tr>
+          <tr id="s-l"><td class="sym">L1, L2, L3</td><td>엘 원, 엘 투, 엘 쓰리</td><td><b>막대 길이</b> [m]. 위팔(어깨→팔꿈치), 아래팔(팔꿈치→손목), 손(손목→손끝)</td><td class="go"><a data-ref="fk" href="../fk/">{n}</a> <a data-ref="ik" href="../ik/">{n}</a></td></tr>
+          <tr id="s-xz"><td class="sym">x, z</td><td>엑스, 제트</td><td>손끝 위치. x = 앞, z = 위, y = 왼쪽 [m]. 기구학 문제는 <b>어깨(joint2) 축이 원점</b></td><td class="go"><a data-ref="fk" href="../fk/">{n}</a> <a data-ref="ik" href="../ik/">{n}</a></td></tr>
+          <tr id="s-tri"><td class="sym">d, γ, β, φ</td><td>디, 감마, 베타, 파이</td><td>IK 삼각형의 기호. d = 어깨에서 손목까지 거리, γ = 팔꿈치 안쪽 각, β = 어깨에서 본 각, φ = 막대가 수평에서 기운 각</td><td class="go"><a data-ref="ik" href="../ik/">{n}</a></td></tr>
+          <tr id="s-atan2"><td class="sym">atan2(z, x)</td><td>아크탄젠트 투</td><td>점 (x, z)가 원점에서 <b>수평으로부터 몇 도 위</b>에 있는지. tan⁻¹(z÷x)와 같지만 x가 음수여도 바른 각을 줌</td><td class="go"><a data-ref="ik" href="../ik/">{n}</a></td></tr>
           <tr id="s-sum"><td class="sym">Σ</td><td>시그마 (sigma)</td><td>뒤에 오는 것을 모두 더하라는 표시. Σ mᵢ·xᵢ = m₁x₁ + m₂x₂ + …</td><td class="go"><a data-ref="torque" href="../torque/">{n}</a></td></tr>
           <tr id="s-i"><td class="sym">mᵢ, xᵢ</td><td>엠 아이, 엑스 아이</td><td>아래 작은 i = i번째 링크(또는 관절)의 값</td><td class="go"><a data-ref="torque" href="../torque/">{n}</a> <a data-ref="payload" href="../payload/">{n}</a></td></tr>
           <tr id="s-inertia"><td class="sym">I</td><td>아이 (I)</td><td><b>관성 모멘트</b>. 관절 하나만 볼 때의 M(q). 돌리기 힘든 정도 [kg·m²]</td><td class="go"><a data-ref="vibration" href="../vibration/">{n}</a> <a data-ref="diverge" href="../diverge/">{n}</a> <a data-ref="lag" href="../lag/">{n}</a></td></tr>
           <tr id="s-b"><td class="sym">b</td><td>비 (b)</td><td>관절 자체의 <b>점성 감쇠</b>. 빠를수록 커지는 저항</td><td class="go"><a data-ref="vibration" href="../vibration/">{n}</a></td></tr>
           <tr id="s-zeta"><td class="sym">ζ</td><td>제타 (zeta)</td><td><b>감쇠비</b>. 1보다 작으면 목표를 지나쳤다 돌아옴</td><td class="go"><a data-ref="vibration" href="../vibration/">{n}</a></td></tr>
           <tr id="s-omega"><td class="sym">ω</td><td>오메가 (omega)</td><td><b>고유 진동수</b>. 스프링이 스스로 흔들리는 빠르기 [rad/s]</td><td class="go"><a data-ref="diverge" href="../diverge/">{n}</a></td></tr>
-          <tr id="s-alpha"><td class="sym">α</td><td>알파 (alpha)</td><td><b>각가속도</b>. <span class="d2">q</span>와 같은 것 [rad/s²]</td><td class="go"><a data-ref="lag" href="../lag/">{n}</a></td></tr>
+          <tr id="s-alpha"><td class="sym">α</td><td>알파 (alpha)</td><td><b>각가속도</b>. <span class="d2">q</span>와 같은 것 [rad/s²]. <span class="warn"><a data-ref="fk" href="../fk/">상황 {n}</a> FK·<a data-ref="ik" href="../ik/">상황 {n}</a> IK에서는 같은 글자가 ‘위팔이 수직에서 기울어 붙은 각 20.1°’</span></td><td class="go"><a data-ref="lag" href="../lag/">{n}</a> <a data-ref="fk" href="../fk/">{n}</a> <a data-ref="ik" href="../ik/">{n}</a></td></tr>
           <tr id="s-delta"><td class="sym">Δq</td><td>델타 큐 (delta q)</td><td>Δ = 변화량. 움직일 각도</td><td class="go"><a data-ref="lag" href="../lag/">{n}</a></td></tr>
           <tr id="s-dt"><td class="sym">dt</td><td>디 티</td><td>시뮬레이터가 한 번에 계산하는 시간 간격</td><td class="go"><a data-ref="diverge" href="../diverge/">{n}</a> <a data-ref="contact" href="../contact/">{n}</a></td></tr>
           <tr id="s-fnft"><td class="sym">Fn, Ft</td><td>에프 엔, 에프 티</td><td>누르는 힘(법선력), 미끄러지는 방향의 힘(접선력)</td><td class="go"><a data-ref="slip" href="../slip/">{n}</a></td></tr>
@@ -107,6 +113,11 @@
       <div class="tblwrap"><table class="gloss">
         <thead><tr><th>분류</th><th>용어</th><th>뜻</th><th>상황</th></tr></thead>
         <tbody>
+          <tr id="t-fk"><td>기구학</td><td><b>순기구학</b> (FK, Forward Kinematics)</td><td><b>관절 각도 → 손끝 위치</b>. 막대를 하나씩 따라가며 각도를 더해 손끝 x, z를 구함. 답은 늘 하나</td><td class="go"><a data-ref="fk" href="../fk/">{n}</a></td></tr>
+          <tr id="t-ik"><td>기구학</td><td><b>역기구학</b> (IK, Inverse Kinematics)</td><td><b>손끝 위치 → 관절 각도</b>. FK의 반대. "저 공을 잡아라"를 각도로 바꾸는 계산. 답이 2개일 수도, 없을 수도 있음</td><td class="go"><a data-ref="ik" href="../ik/">{n}</a></td></tr>
+          <tr id="t-ws"><td>기구학</td><td><b>작업 공간</b> (Workspace)</td><td>손끝이 닿을 수 있는 범위. 막대를 다 뻗은 길이보다 먼 곳은 IK 답이 없음</td><td class="go"><a data-ref="ik" href="../ik/">{n}</a> <a data-ref="singularity" href="../singularity/">{n}</a></td></tr>
+          <tr id="t-sing"><td>기구학</td><td><b>특이점</b> (Singularity)</td><td>팔이 다 뻗은 것처럼 어떤 방향으로는 관절을 아무리 돌려도 손끝이 못 가는 자세. 그 근처에서는 작은 손끝 움직임에도 관절이 아주 빨리 돌아야 함</td><td class="go"><a data-ref="singularity" href="../singularity/">{n}</a></td></tr>
+          <tr id="t-cos"><td>기구학</td><td><b>코사인 법칙</b></td><td>세 변 a, b, c를 알면 c 맞은편 각 C를 구하는 식: c² = a² + b² − 2·a·b·cos C. IK에서 어깨–팔꿈치–손목 삼각형의 각을 구할 때 씀</td><td class="go"><a data-ref="ik" href="../ik/">{n}</a></td></tr>
           <tr id="t-torque"><td>힘</td><td><b>토크</b> (Torque, Nm)</td><td>돌리는 힘. 힘 × 회전축까지의 거리라서, 같은 무게도 멀리 있을수록 커짐</td><td class="go"><a data-ref="torque" href="../torque/">{n}</a> <a data-ref="lag" href="../lag/">{n}</a></td></tr>
           <tr id="t-sat"><td>힘</td><td><b>토크 포화</b> (Saturation)</td><td>모터 최대 힘에 걸려 명령보다 작은 힘만 나오는 상태</td><td class="go"><a data-ref="torque" href="../torque/">{n}</a> <a data-ref="lag" href="../lag/">{n}</a></td></tr>
           <tr id="t-fric"><td>힘</td><td><b>관절 마찰</b> (frictionloss)</td><td>관절이 돌 때 늘 반대로 거는 작은 힘. 버틸 때는 모터를 도와줌</td><td class="go"><a data-ref="torque" href="../torque/">{n}</a></td></tr>
@@ -134,15 +145,16 @@
       <h2><span class="num">5</span>실험실 화면 보는 법</h2>
       <p>모든 상황은 <b>1 개념 → 2 예측 → 3 실험 → 4 확인</b> 순서입니다. 손으로 먼저 예측하고, 실험으로 맞았는지 봅니다. 왼쪽(휴대폰은 위쪽)이 3D 시뮬레이션, 오른쪽이 단계 카드입니다.</p>
       <div class="tblwrap"><table class="gloss">
-        <thead><tr><th>관절</th><th>로봇의 어디</th></tr></thead>
+        <thead><tr><th>관절</th><th>각도</th><th>로봇의 어디</th><th>+로 돌면</th></tr></thead>
         <tbody>
-          <tr><td class="sym">joint1</td><td>바닥 회전 (팔 전체를 좌우로 돌림)</td></tr>
-          <tr><td class="sym">joint2</td><td>어깨 (위팔을 앞뒤로 숙임)</td></tr>
-          <tr><td class="sym">joint3</td><td>팔꿈치</td></tr>
-          <tr><td class="sym">joint4</td><td>손목 꺾기</td></tr>
-          <tr><td class="sym">joint5</td><td>손목 돌리기</td></tr>
+          <tr><td class="sym">joint1</td><td class="sym">θ1</td><td>바닥 회전 (팔 전체를 좌우로 돌림)</td><td>위에서 볼 때 반시계 (손끝이 왼쪽 +y로)</td></tr>
+          <tr><td class="sym">joint2</td><td class="sym">θ2</td><td>어깨 (위팔을 앞뒤로 숙임)</td><td rowspan="3">그 뒤의 막대가 모두 앞(아래)으로 숙여짐</td></tr>
+          <tr><td class="sym">joint3</td><td class="sym">θ3</td><td>팔꿈치</td></tr>
+          <tr><td class="sym">joint4</td><td class="sym">θ4</td><td>손목 꺾기</td></tr>
+          <tr><td class="sym">joint5</td><td class="sym">-</td><td>손목 돌리기</td><td>기구학 문제에서는 쓰지 않음</td></tr>
         </tbody>
       </table></div>
+      <p class="note">모든 관절이 0°이면 위팔은 거의 수직으로 서고(앞으로 20.1° 기울어 붙음) 아래팔과 손은 수평 앞을 향합니다. 이 자세에서 각도를 더해 가며 계산하는 것이 <a href="#t-fk">순기구학</a>입니다.</p>
       <p class="note">3D 화면 왼쪽 아래 버튼으로 관절 이름표를 켜고 끌 수 있습니다. 마우스로 끌면 돌려 보고, 휠로 확대합니다.</p>
       <div class="legend">
         <span><i style="background:var(--accent)"></i>파랑: 모터 토크</span>

@@ -30,8 +30,16 @@
     <section class="steps">
       <article class="card" id="c1">
         <h2><span class="num">1</span>개념: 삼각형 하나로 줄여서 푼다</h2>
-        <p class="basics-link">기호가 낯설면 → <a data-ref="fk" href="../fk/">상황 {n} FK</a>의 막대 길이와 각도 방향을 먼저 보세요.</p>
-        <p><b>손을 수평으로 유지</b>한다고 정하면(θ2+θ3+θ4 = 0) 문제가 쉬워집니다. 손목은 손끝에서 L3만큼 뒤에 있으니, 남은 일은 <b>어깨–팔꿈치–손목 삼각형</b>을 푸는 것입니다.</p>
+        <p class="basics-link">기호가 낯설면 → <a href="../basics/#t-ik">0 · 기초 개념: FK와 IK</a>, 막대 길이와 각도 방향은 <a data-ref="fk" href="../fk/">상황 {n} FK</a></p>
+        <div class="tblwrap"><table>
+          <thead><tr><th></th><th>넣는 것</th><th>구하는 것</th><th>답의 개수</th></tr></thead>
+          <tbody>
+            <tr><td><b>FK</b> 순기구학</td><td>관절 각도 θ2, θ3, θ4</td><td>손끝 위치 (x, z)</td><td>늘 1개</td></tr>
+            <tr><td><b>IK</b> 역기구학</td><td>손끝 위치 (x, z)</td><td>관절 각도 θ2, θ3, θ4</td><td>2개, 또는 0개(안 닿음)</td></tr>
+          </tbody>
+        </table></div>
+        <p>FK는 식에 각도를 넣기만 하면 됐지만, IK는 그 식을 거꾸로 풀어야 해서 어렵습니다. 관절이 3개(θ2, θ3, θ4)인데 맞출 값은 x, z 두 개뿐이라 조건이 하나 더 필요합니다.</p>
+        <p>그래서 <b>손을 수평으로 유지</b>한다고 정하면(θ2+θ3+θ4 = 0) 문제가 쉬워집니다. 손목은 손끝에서 L3만큼 뒤에 있으니, 남은 일은 <b>어깨–팔꿈치–손목 삼각형</b>을 푸는 것입니다.</p>
         <svg class="kin-fig" viewBox="0 0 360 180" role="img" aria-label="어깨, 팔꿈치, 손목이 이루는 삼각형. 변은 L1, L2, d">
           <line x1="20" y1="130" x2="340" y2="130" class="ax"/>
           <line x1="40" y1="130" x2="110" y2="40" class="link"/><line x1="110" y1="40" x2="220" y2="130" class="link"/><line x1="220" y1="130" x2="310" y2="130" class="link hand"/>
@@ -45,8 +53,9 @@
         <ol class="howto">
           <li>손목 위치: W = (공 x − L3, 공 z), 어깨에서 손목까지 거리 <b>d = √(Wx² + Wz²)</b></li>
           <li>코사인 법칙으로 팔꿈치 안쪽 각 <b>γ</b>와 어깨에서 본 각 <b>β</b>:
-            <div class="formula">cos γ = (L1² + L2² − d²) ÷ (2·L1·L2)<br>cos β = (L1² + d² − L2²) ÷ (2·L1·d)</div></li>
-          <li>위팔 방향(수평에서 위로) φ1 = atan2(Wz, Wx) ± β. <b>+</b>는 팔꿈치가 위, <b>−</b>는 아래. 그래서 <b>답이 2개</b>입니다.</li>
+            <div class="formula">cos γ = (L1² + L2² − d²) ÷ (2·L1·L2)<br>cos β = (L1² + d² − L2²) ÷ (2·L1·d)</div>
+            <p class="note"><a href="../basics/#t-cos">코사인 법칙</a>: 삼각형 세 변의 길이를 알면 각을 구할 수 있습니다. 구한 cos 값에 cos⁻¹(arccos)을 하면 각이 나옵니다.</p></li>
+          <li>위팔 방향(수평에서 위로) φ1 = atan2(Wz, Wx) ± β. <a href="../basics/#s-atan2">atan2(Wz, Wx)</a>는 어깨에서 손목을 바라본 방향이 수평에서 몇 도 위인지입니다 (Wx가 양수면 tan⁻¹(Wz ÷ Wx)와 같음). <b>+</b>는 팔꿈치가 위, <b>−</b>는 아래. 그래서 <b>답이 2개</b>입니다.</li>
           <li>관절 각도로 바꾸기 (α = 20.1°는 위팔이 기울어 붙은 각):
             <div class="formula">θ2 = 90° − α − φ1<br>아래팔 방향 φ2 = φ1 ∓ (180° − γ),  θ3 = −φ2 − θ2<br>θ4 = −(θ2 + θ3)   ← 손을 수평으로</div></li>
         </ol>
