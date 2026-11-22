@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>검사 실행 중…</title>
+<style>
+  body { font: 14px/1.5 system-ui, sans-serif; margin: 16px; }
+  table { border-collapse: collapse; } td, th { border: 1px solid #ccc; padding: 3px 8px; text-align: left; vertical-align: top; }
+  .pass { color: #15803d; font-weight: 700; } .fail { color: #b91c1c; font-weight: 700; }
+  iframe { width: 1280px; height: 800px; border: 1px solid #999; display: block; margin-top: 12px; }
+</style>
+</head>
+<body>
+<!-- 피지컬AI 실험실 브라우저 검사. http 서버로 omx-lab/ 을 띄운 뒤 /tools/test.html 을 연다.
+     ?only=이름 으로 하나만. 결과는 표 + 제목(PASS n/n 또는 FAIL). 배포에서는 tools/ 를 뺀다. -->
+<h1 id="sum">검사 실행 중…</h1>
+<table><thead><tr><th>검사</th><th>결과</th><th>내용</th></tr></thead><tbody id="out"></tbody></table>
+<div id="frames"></div>
+<script>
+const out = document.getElementById("out");
+const results = [];
+function row(name, ok, msg) {
+  results.push(ok);
+  out.insertAdjacentHTML("beforeend", `<tr><td>${name}</td><td class="${ok ? "pass" : "fail"}">${ok ? "PASS" : "FAIL"}</td><td>${msg || ""}</td></tr>`);
+}
+function load(src, before) {
+  return new Promise((res) => {
+    if (before) before();
+    const f = document.createElement("iframe");
+    f.src = src;
+    f.onload = () => setTimeout(() => res(f), 300);
+    document.getElementById("frames").replaceChildren(f);
+  });
+}
+const txt = (el) => (el ? el.textContent.replace(/\s+/g, " ").trim() : "(없음)");
+function expect(name, cond, msg) { try { row(name, !!cond(), msg); } catch (e) { row(name, false, "예외: " + e.message); } }
+const clearStore = () => { for (const k of Object.keys(localStorage)) if (k.startsWith("omx-lab-")) localStorage.removeItem(k); };
+
+const TESTS = {
+  async shell_torque() {
+    clearStore();
+    const d = (await load("../torque/")).contentDocument;
+    expect("torque: 사이드바 있음", () => d.querySelector(".app > .side"));
+    expect("torque: 제목 번호 4", () => txt(d.querySelector(".main h1 .n")) === "4", txt(d.querySelector(".main h1 .n")));
+    expect("torque: 단원 칩 정역학", () => txt(d.querySelector(".eyebrow .chip")) === "정역학", txt(d.querySelector(".eyebrow .chip")));
+    expect("torque: 경로", () => txt(d.querySelector(".topbar .crumb")).includes("정역학 / 4 · 명령을 보내도 안 움직임"), txt(d.querySelector(".topbar .crumb")));
+    expect("torque: 이전 = 3 · 손끝 속도와 특이점", () => txt(d.querySelector(".pager .prev b")) === "3 · 손끝 속도와 특이점", txt(d.querySelector(".pager .prev b")));
+    expect("torque: 다음 = 5", () => txt(d.querySelector(".pager .next b")).startsWith("5 · "), txt(d.querySelector(".pager .next b")));
+    expect("torque: 단계줄 = 카드 수", () => d.querySelectorAll(".stepper a").length === d.querySelectorAll('article.card[id^="c"]').length && d.querySelectorAll(".stepper a").length === 5, d.querySelectorAll(".stepper a").length + "개");
+    expect("torque: 목록 현재 항목", () => txt(d.querySelector(".item.on")).includes("명령을 보내도 안 움직임"), txt(d.querySelector(".item.on")));
+    expect("torque: 준비 중 항목은 링크 아님", () => !d.querySelector('a.item[data-id="push"]') && d.querySelector('.item.soon[data-id="push"]'));
+    expect("torque: {n} 남은 글자 없음", () => ![...d.querySelectorAll("[data-ref]")].some((a) => a.textContent.includes("{")));
+    expect("torque: 진행 0 / 14", () => txt(d.querySelector(".progress .cnt")) === "0 / 14", txt(d.querySelector(".progress .cnt")));
+    expect("torque: 로고·이름·제작자", () => d.querySelector(".brand img.logo") && txt(d.querySelector(".brand b")) === "피지컬AI 실험실" && d.querySelector('.maker[href="https://www.youtube.com/@langpeudoit"]'));
+    expect("torque: 시뮬 창 그대로", () => d.querySelector(".main #viewport"));
+  },
+  async refs() {
+    const d = (await load("../sim2real/")).contentDocument;
+    expect("sim2real: 상황 14 참조", () => txt(d.querySelector('a[data-ref="sag"]')) === "상황 14", txt(d.querySelector('a[data-ref="sag"]')));
+    const b = (await load("../basics/")).contentDocument;
+    expect("basics: 표 숫자 16", () => txt(b.querySelector('.go a[data-ref="lag"]')) === "16", txt(b.querySelector('.go a[data-ref="lag"]')));
+    expect("basics: 제목 번호 span 없음", () => !b.querySelector(".main h1 .n"));
+    expect("basics: 이전 없음, 다음 = 1", () => !b.querySelector(".pager .prev") && txt(b.querySelector(".pager .next b")).startsWith("1 · "), txt(b.querySelector(".pager .next b")));
+  },
+  async home() {
+    const d = (await load("../")).contentDocument;
+    expect("첫 화면: 사이드바", () => d.querySelector(".app > .side"));
+    expect("첫 화면: 경로 없음", () => !d.querySelector(".topbar .crumb"));
+    expect("첫 화면: 현재 항목 없음", () => !d.querySelector(".item.on"));
+    expect("첫 화면: q̇ 를 점 그린 표기로", () => d.querySelector('a[href$="/lag/"], .soon') && [...d.querySelectorAll(".plist .c")].some((c) => c.querySelector(".d1")) && ![...d.querySelectorAll(".plist .c")].some((c) => /[\u0307\u0308]/.test(c.textContent)));
+  },
+  async search_and_units() {
+    const d = (await load("../torque/")).contentDocument, w = d.defaultView;
+    const q = d.getElementById("side-q");
+    q.value = "없는말"; q.dispatchEvent(new w.Event("input"));
+    expect("검색: 결과 없음 문구", () => txt(d.querySelector(".side nav")).includes("‘없는말’와 맞는 문제가 없습니다"), txt(d.querySelector(".side nav")));
+    q.value = "Kp"; q.dispatchEvent(new w.Event("input"));
+    expect("검색 Kp: 처짐 나옴", () => d.querySelector('.item[data-id="sag"]') && !d.querySelector('.item[data-id="slip"]'));
+    q.value = ""; q.dispatchEvent(new w.Event("input"));
+    localStorage.setItem("omx-lab-units", JSON.stringify(["basics", "kin", "statics", "dyn", "control", "actuator", "sim", "tools"]));
+    const d2 = (await load("../torque/")).contentDocument;
+    expect("접힘 저장 + 현재 단원은 펼침", () => !d2.querySelector('.unit[data-u="statics"]').classList.contains("closed") && d2.querySelector('.unit[data-u="dyn"]').classList.contains("closed"));
+    localStorage.removeItem("omx-lab-units");
+  },
+  async progress() {
+    localStorage.setItem("omx-lab-progress", JSON.stringify({ torque: "done", sag: "part" }));
+    const d = (await load("../vibration/")).contentDocument;
+    expect("진행: torque 완료 원", () => d.querySelector('.item[data-id="torque"] .st.done'));
+    expect("진행: sag 진행 중 원", () => d.querySelector('.item[data-id="sag"] .st.part'));
+    expect("진행: 1 / 14", () => txt(d.querySelector(".progress .cnt")) === "1 / 14", txt(d.querySelector(".progress .cnt")));
+    const c = d.querySelector('article.card[id^="c"]'); c.classList.add("done");
+    await new Promise((r) => setTimeout(r, 100));
+    expect("진행: 카드 완료 → vibration 진행 중 저장", () => JSON.parse(localStorage.getItem("omx-lab-progress")).vibration === "part");
+    clearStore();
+  },
+  async collapse() {
+    localStorage.removeItem("omx-lab-side-closed");
+    let d = (await load("../torque/")).contentDocument;
+    const app = () => d.querySelector(".app"), vis = (el) => el && d.defaultView.getComputedStyle(el).display !== "none";
+    expect("접기: 처음엔 펼침, 목록 버튼 숨김", () => !app().classList.contains("collapsed") && vis(d.querySelector(".side")) && !vis(d.querySelector(".menu-btn")));
+    d.querySelector(".side-collapse").click();
+    expect("접기: « 누르면 접힘", () => app().classList.contains("collapsed") && !vis(d.querySelector(".side")) && vis(d.querySelector(".menu-btn")));
+    expect("접기: 본문이 넓어짐", () => d.querySelector(".main").getBoundingClientRect().left < 5, d.querySelector(".main").getBoundingClientRect().left);
+    d = (await load("../vibration/")).contentDocument;
+    expect("접기: 다른 페이지에서도 유지", () => app().classList.contains("collapsed"));
+    d.querySelector(".menu-btn").click();
+    expect("접기: ☰ 누르면 펼침", () => !app().classList.contains("collapsed") && vis(d.querySelector(".side")));
+    d.body.dispatchEvent(new d.defaultView.KeyboardEvent("keydown", { key: "[", bubbles: true }));
+    expect("접기: [ 키로 접힘", () => app().classList.contains("collapsed"));
+    localStorage.removeItem("omx-lab-side-closed");
+  },
+  async calc_keys() {
+    const d = (await load("../torque/")).contentDocument;
+    d.defaultView.OmxCalc.open();
+    const w = (sel) => Math.round(d.querySelector("#calc .keys " + sel).getBoundingClientRect().width);
+    expect("계산기: 숫자 키 = 다른 키 너비", () => w('[data-k="7"]') === w('[data-k="C"]') && w('[data-k="7"]') > 40, w('[data-k="7"]') + " / " + w('[data-k="C"]'));
+  },
+  async wide() {
+    const f = await load("../");
+    f.style.width = "1900px"; await new Promise((r) => setTimeout(r, 300));
+    const d = f.contentDocument, m = d.querySelector(".main").getBoundingClientRect(), w = d.querySelector(".main .wrap").getBoundingClientRect();
+    expect("넓은 화면: 본문이 사이드바 옆에 붙음 (왼쪽 여백 ≤ 40)", () => w.left - m.left <= 40, Math.round(w.left - m.left));
+    expect("넓은 화면: 본문 폭 ≥ 1400", () => w.width >= 1400, Math.round(w.width));
+    expect("넓은 화면: 첫 화면 카드 3열 이상", () => new Set([...d.querySelectorAll(".hunit:nth-child(3) .plist li")].map((li) => Math.round(li.getBoundingClientRect().top))).size <= 2);
+    f.style.width = "";
+  },
+  async side_scroll() {
+    sessionStorage.removeItem("omx-lab-side-scroll");
+    let f = await load("../torque/");
+    f.contentDocument.querySelector(".side").scrollTop = 300;
+    const want = f.contentDocument.querySelector(".side").scrollTop;   // 목록이 짧으면 300 보다 작게 멈춤
+    await new Promise((r) => setTimeout(r, 300));                      // scroll 이벤트는 다음 화면 갱신 때 옴
+    f = await load("../sag/");
+    expect("목록 스크롤 위치 유지", () => want > 50 && Math.abs(f.contentDocument.querySelector(".side").scrollTop - want) <= 2, want + " → " + f.contentDocument.querySelector(".side").scrollTop);
+    expect("사이드바 만든 뒤 body.shelled", () => f.contentDocument.body.classList.contains("shelled"));
+  },
+  async width() {
+    localStorage.setItem("omx-lab-side-w", "400");
+    const d = (await load("../torque/")).contentDocument;
+    expect("폭 기억 400px", () => Math.round(d.querySelector(".side").getBoundingClientRect().width) === 400, d.querySelector(".side").getBoundingClientRect().width);
+    localStorage.setItem("omx-lab-side-w", "9999");
+    const d2 = (await load("../torque/")).contentDocument;
+    expect("폭 최대 520px", () => Math.round(d2.querySelector(".side").getBoundingClientRect().width) === 520);
+    localStorage.removeItem("omx-lab-side-w");
+  },
+};
+(async () => {
+  const only = new URLSearchParams(location.search).get("only");
+  for (const [k, fn] of Object.entries(TESTS)) { if (!only || only === k) { try { await fn(); } catch (e) { row(k, false, "예외: " + e.message); } } }
+  const pass = results.filter(Boolean).length;
+  const s = pass === results.length ? `PASS ${pass}/${results.length}` : `FAIL ${pass}/${results.length}`;
+  document.title = s; document.getElementById("sum").textContent = s;
+  document.getElementById("frames").replaceChildren();
+})();
+</script>
+</body>
+</html>

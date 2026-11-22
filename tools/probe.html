@@ -1,0 +1,7 @@
+<!doctype html><meta charset="utf-8"><title>probe</title>
+<!-- 개발용: 실험실 MuJoCo 로 수치 확인 (배포 안 함) -->
+<div id="viewport" style="width:400px;height:300px;position:relative"><div id="overlay"></div><span id="simclock"></span><span id="runstate"></span></div>
+<script src="../lib/three.min.js"></script><script src="../lib/OrbitControls.js"></script><script src="../common/lab.js"></script><script src="../common/kin.js"></script>
+<script>
+window.LAB = OmxLab.start().then((lab) => { window.lab = lab; document.title = "READY"; return lab; });
+</script>

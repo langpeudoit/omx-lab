@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>계산기 검사 중…</title>
+<style>body{font:14px system-ui;margin:16px} td,th{border:1px solid #ccc;padding:3px 8px} .p{color:#15803d;font-weight:700} .f{color:#b91c1c;font-weight:700}</style></head>
+<body><h1 id="sum">계산기 검사 중…</h1><table><tbody id="out"></tbody></table>
+<script src="../common/calc.js"></script>
+<script>
+// OmxCalc.evaluate 검사: [식, 옵션, 기대값(숫자) 또는 오류 문구 일부(문자열)]
+const CASES = [
+  ["0.0232÷9.81÷0.401×1000", {}, 5.897590377],
+  ["1.5÷(9.81×0.401)", {}, 0.3813097226],
+  ["2π(3+1)²−√16", {}, 96.53096491],
+  ["sin(30)", { deg: true }, 0.5],
+  ["sin(π/6)", { deg: false }, 0.5],
+  ["-2^2", {}, -4],
+  ["2^3^2", {}, 512],
+  ["50%×g", {}, 4.905],
+  ["1.5e-3×1000", {}, 1.5],
+  ["ans×2", { ans: 21 }, 42],
+  ["(1+2", {}, "괄호"],
+  ["foo(2)", {}, "모르는 이름"],
+  ["1÷0", {}, "무한대"],
+];
+let pass = 0; const out = document.getElementById("out");
+for (const [ex, opt, want] of CASES) {
+  let got, ok;
+  try { got = OmxCalc.evaluate(ex, opt); ok = typeof want === "number" && Math.abs(got - want) <= 1e-8 * Math.max(1, Math.abs(want)); }
+  catch (e) { got = "오류: " + e.message; ok = typeof want === "string" && e.message.includes(want); }
+  if (ok) pass++;
+  out.insertAdjacentHTML("beforeend", `<tr><td>${ex}</td><td>${JSON.stringify(opt)}</td><td>${want}</td><td>${got}</td><td class="${ok ? "p" : "f"}">${ok ? "PASS" : "FAIL"}</td></tr>`);
+}
+document.title = document.getElementById("sum").textContent = (pass === CASES.length ? "PASS " : "FAIL ") + pass + "/" + CASES.length;
+</script></body></html>
