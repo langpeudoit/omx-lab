@@ -3,12 +3,17 @@
 OMX-AI 팔로워 팔(OMX-F)을 브라우저 안의 MuJoCo로 움직이며 로봇 기구학과 동역학을 배우는 비공식 학습 자료입니다.
 상황마다 **손으로 예측 → 시뮬레이션 실험 → 예측과 비교** 순서로 진행합니다.
 
-- 사이트: https://langpeu.github.io/omx-lab/ (langpeu.github.io 블로그 저장소의 omx-lab/ 폴더)
+- 사이트: https://omx-lab.pages.dev/ (Cloudflare Pages, `site/` 폴더만 배포)
 - 제작: Langpeu · https://www.youtube.com/@langpeudoit
 
 ## 구조
 
+저장소 루트는 작업 공간이고, **배포되는 것은 `site/` 폴더뿐**입니다.
+
 ```
+CLAUDE.md             작업 메모 (배포 안 됨)
+docs/                 설계 문서, plans/ 구현 계획 (배포 안 됨)
+site/                 ← 배포되는 사이트. 아래 경로는 모두 site/ 기준
 index.html            첫 화면 (단원별 문제 목록)
 common/lab.css        공통 디자인 (사이드바 틀, 카드, 계산기)
 common/lab.js         공통 코드: 단원·문제 목록(UNITS, PROBLEMS, TOOLS), 사이드바 틀(shell),
@@ -19,7 +24,7 @@ lib/                  mujoco.js/.wasm (MuJoCo 3.17.0), three.js r128
 model/                omx_lab.xml + meshes/*.stl (ROBOTIS 원본에서 생성)
 <id>/                 문제 하나: index.html(내용) + <id>.js(이 문제의 실험). 예: torque/, sag/
 tool-*/               도구: 서보 스펙 계산기, 단위 변환·어림 계산
-tools/                개발용 (배포에서 뺌): build_xml.py, check_site.py, test.html, calc_test.html
+tools/                개발용 (Cloudflare 빌드 명령 `rm -rf site/tools` 로 배포에서 뺌): build_xml.py, check_site.py, test.html, calc_test.html
 ```
 
 ## 번호 규칙
@@ -30,14 +35,14 @@ tools/                개발용 (배포에서 뺌): build_xml.py, check_site.py,
 
 ## 문제 추가
 
-1. 비슷한 문제 폴더(예: `torque/`)를 복사해 `<새 id>/` 를 만들고 내용과 실험(`<새 id>.js`)을 바꿉니다. 실험 JS 는 `OmxLab.shell("<새 id>")` 를 부릅니다.
+1. `site/` 안에서 비슷한 문제 폴더(예: `torque/`)를 복사해 `<새 id>/` 를 만들고 내용과 실험(`<새 id>.js`)을 바꿉니다. 실험 JS 는 `OmxLab.shell("<새 id>")` 를 부릅니다.
 2. `common/lab.js` 의 `PROBLEMS` 에서 그 id 의 `ready` 를 `true` 로 바꿉니다 (없으면 한 줄 추가).
-3. `python3 tools/check_site.py` 로 검사합니다.
+3. `python3 site/tools/check_site.py` 로 검사합니다.
 
 ## 로컬에서 보기
 
 ```
-python3 -m http.server 8000     # 이 폴더에서
+cd site && python3 -m http.server 8000
 ```
 브라우저에서 http://localhost:8000 (파일을 더블클릭해 열면 동작하지 않습니다). 검사: http://localhost:8000/tools/test.html
 

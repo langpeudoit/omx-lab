@@ -1,14 +1,14 @@
 # ROBOTIS omx.xml + scene.xml 을 한 파일로 합치고 메시 경로를 파일 이름만 남깁니다.
 # 사용법 (저장소 폴더에서): python3 tools/build_xml.py
 #   → model/omx_lab.xml 생성, 메시 STL 을 model/meshes/ 로 복사
-# ROBOTIS open_manipulator 저장소가 이 저장소 옆(../open_manipulator)에 있어야 합니다. 원본은 수정하지 않습니다.
+# ROBOTIS open_manipulator 저장소가 omx-lab 저장소 옆(../open_manipulator, site/ 기준 ../../open_manipulator)에 있어야 합니다. 원본은 수정하지 않습니다.
 import os
 import re
 import shutil
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
-DESC = os.path.join(REPO, "..", "open_manipulator", "open_manipulator_description")
+DESC = os.path.join(REPO, "..", "..", "open_manipulator", "open_manipulator_description")
 MJ = os.path.join(DESC, "mujoco", "omx")
 MESH = os.path.join(DESC, "meshes", "omx_f")
 
