@@ -1,6 +1,6 @@
 # 피지컬AI 실험실 — 작업 노트
 
-저장소: 비공개 `langpeu/omx-lab` = 로컬 `~/omx-lab/` (2026-11-22부터. 그 전 위치 ~/isaac/omx_isaac_lab/omx-lab 은 삭제됨). 사이트: https://omx-lab.pages.dev/ (Cloudflare Pages)
+저장소: 공개(2026-11-23부터) `langpeudoit/omx-lab` = 로컬 `~/omx-lab/` (2026-11-22부터. 그 전 위치 ~/isaac/omx_isaac_lab/omx-lab 은 삭제됨). 사이트: https://omx-lab.pages.dev/ (Cloudflare Pages)
 
 **경로 규칙**: 저장소 루트는 작업 공간(CLAUDE.md, docs/), **배포되는 건 `site/` 폴더뿐**. 아래 노트의 `common/lab.js`, `tools/...`, 문제 폴더(`torque/` 등)는 모두 `site/` 기준. 메모·설계·플랜은 `site/` 밖에 둔다 (site 안에 두면 공개됨). 설계 문서는 `docs/`, 구현 계획은 `docs/plans/`.
 
@@ -20,11 +20,13 @@ Isaac Sim 실습 폴더(omx_lab: lab01~10.py, usd_lab, mujoco_web)는 2026-11-22
 
 ## ▶ 이어서 할 일 (2026-11-21 저녁 기준, 여기부터 읽기)
 
-**지금 상태**: 피지컬AI 실험실 **https://omx-lab.pages.dev/** (Cloudflare Pages, 2026-11-22 이사). 저장소 = 비공개 `langpeu/omx-lab` = 로컬 `~/omx-lab/`. 옛 주소 langpeu.github.io/omx-lab/ 는 2026-11-22 블로그 저장소에서 삭제함(404, 사용자 결정).
+**지금 상태**: 피지컬AI 실험실 **https://omx-lab.pages.dev/** (Cloudflare Pages, 2026-11-22 이사). 저장소 = 공개(2026-11-23부터) `langpeudoit/omx-lab` = 로컬 `~/omx-lab/`. 옛 주소 langpeu.github.io/omx-lab/ 는 2026-11-22 블로그 저장소에서 삭제함(404, 사용자 결정).
 - 22개 중 **14개 완성**: 0 기초, 1 FK, 2 IK, 3 특이점, 4 토크, 5 페이로드, 7 미끄러짐, 8 넘어짐, 13 떨림, 14 처짐, 16 지연, 19 발산, 20 관통, 21 Sim2Real + 도구 2개
 - 준비 중 8개: 6 push(힘 방향 Jᵀ·F), 9 inertia(자세별 관성), 10 pendulum(손목 진자), 11 coupling(관절 결합), 12 centrifugal(원심력), 15 pid(적분), 17 speed-torque(토크-속도), 18 current(전류) + 도구 FK·IK 계산기
 - 실험 방식: 2단계 예측값으로 ×0.9 / 그대로 / ×1.1 세 번 실행해 판정 (`OmxLab.check3`). 관통만 0.6~1.4배 9번
 - 설계 문서 `docs/2026-11-21-kinematics-dynamics-expansion-design.md` 7장에 새 상황별 예측·실험 계획이 있음
+
+**동역학 단원 남은 작업 (2026-11-23 정리, 이슈 등록 예정)**: 9 inertia → 10 pendulum → 11 coupling → 12 centrifugal (설계 문서 7장 순서, 11·12 는 앞 문제 해 본 뒤 뺄 수도 있음). 각 문제 = 손계산↔시뮬 확인 → 수치 보고 → 페이지(check3) → `lab.js` ready:true → check_site.py·브라우저 테스트. 이슈는 문제당 1개, 라벨 `dynamics`. GitHub 저장소 소유자는 `langpeudoit` (이슈 기능 켜짐, gh 는 langpeu 계정으로 로그인). Superpowers 플러그인(brainstorming·writing-plans 등)을 쓰더라도 이 문서의 규칙(한국어, 코드 만들기 전 확인)이 우선.
 
 **다음 후보 (사용자에게 먼저 물어볼 것)**
 1. 남은 문제 계속: 설계 순서는 9 관성 → 10 진자 → 15 PID → 6 힘 방향 → 17 토크-속도 → 11 결합 → 12 원심력 → 18 전류. 각 문제: 브라우저 MuJoCo(tools/probe.html + 스크래치 mn.py)로 손계산 ↔ 시뮬 확인 → 수치 보고 → 페이지 → check3 방식
@@ -35,7 +37,9 @@ Isaac Sim 실습 폴더(omx_lab: lab01~10.py, usd_lab, mujoco_web)는 2026-11-22
 **작업 방법 메모**
 - 로컬 확인: `cd ~/omx-lab/site && python3 -m http.server 8765` → http://localhost:8765/ (사용자에게는 Ctrl+Shift+R 안내)
 - 검사: `python3 site/tools/check_site.py`, 브라우저 `tools/test.html`(42개)·`tools/calc_test.html`(13개). 헤드리스 Firefox Marionette 스크립트 mn.py 는 스크래치에 있었음(지워졌으면 다시 작성: 프로필 ~/snap/firefox/common/omxtest/prof, 캐시 끔, ExecuteAsyncScript)
-- 배포: `cd ~/omx-lab && git commit && git push` → Cloudflare Pages 가 `site/` 를 자동 배포(약 1분). 배포는 사용자 요청이 있을 때만. 커밋에 Claude 표시(Co-Authored-By 등) 넣지 말 것
+- **main 반영은 PR 로만 (2026-11-23 사용자 결정)**: main 에 직접 commit·push 하지 않는다. 작업 브랜치(worktree)에서 push → `gh pr create` → 사용자 확인 후 merge. (저장소를 public 으로 바꾼 뒤 GitHub 브랜치 보호를 켬: PR 필수, 승인 0명, 관리자도 적용, 강제 push·삭제 금지)
+- **GitHub flow (2026-11-23)**: 이슈 → 브랜치 → PR(`Closes #번호`) → merge. 템플릿은 `.github/` (새 문제 / 개선·버그 이슈, PR). 라벨: 종류 `새 문제`·`개선`·`문서`·`chore` + 단원 `기구학`·`정역학`·`동역학`·`제어`·`액추에이터`·`시뮬레이션`·`도구` + `공통코드`
+- 배포: PR 을 main 에 merge 하면 Cloudflare Pages 가 `site/` 를 자동 배포(약 1분). 배포는 사용자 요청이 있을 때만. 커밋에 Claude 표시(Co-Authored-By 등) 넣지 말 것
 - pkill -f "http.server" 는 자기 셸까지 죽임 → `pgrep -f "^python3 -m http.server 8765" | xargs -r kill`
 - 사용자 선호: 모든 답변 한국어, 계산한 값을 바로 확인하는 실험을 원함(이분법 싫어함), 인위적 받침대 금지, 원본 Claude Docs 문서는 더 이상 안 씀
 
@@ -52,7 +56,7 @@ Isaac Sim 실습 폴더(omx_lab: lab01~10.py, usd_lab, mujoco_web)는 2026-11-22
 "틀린 값 찾아 고치기"(USD 수정 실습)는 UI 연습에 가깝고 동역학 공부에 도움이 적다고 판단해 **보류**.
 새 방식: 상황마다 **손으로 예측 → 시뮬레이션 실험 → 예측과 비교**. 채점은 "예측이 실험과 맞았나".
 
-- **공개 방식 (2026-11-22 변경): 비공개 GitHub 저장소 `langpeu/omx-lab` → Cloudflare Pages 프로젝트 `omx-lab` → https://omx-lab.pages.dev/**
+- **공개 방식 (2026-11-22 변경): GitHub 저장소(공개) `langpeudoit/omx-lab` → Cloudflare Pages 프로젝트 `omx-lab` → https://omx-lab.pages.dev/**
   - Pages 설정: 프레임워크 없음, 빌드 명령 `rm -rf site/tools`, 출력 디렉터리 `site`, 브랜치 main. push 하면 자동 배포. (Workers 아님 — 사용자가 Pages 원함. wrangler 설정 파일 넣지 말 것)
   - 저장소 구조 (2026-11-22): 루트 = CLAUDE.md, README.md, docs/ / `site/` = 사이트 전체 + site/tools/(개발 도구, 배포 때 지움). tools 는 site 안에 있어서 `../torque/` 같은 상대 경로 그대로. build_xml.py 는 `site/../../open_manipulator` = `~/open_manipulator` 를 읽음
   - 커밋 기록은 블로그 저장소에서 omx-lab 부분만 뽑아 옮김(7개)
@@ -64,7 +68,7 @@ Isaac Sim 실습 폴더(omx_lab: lab01~10.py, usd_lab, mujoco_web)는 2026-11-22
   - **배포 실행(Claude 가 직접 가능, 2026-11-21 확인)**: `gh api repos/langpeu/langpeu.github.io/dispatches -f event_type=RUN_WORKFLOW_DISPATCH` → `gh run list` / `gh run watch <id> --exit-status` (약 1분). gh 는 langpeu 계정으로 로그인됨
   - 빌드에 htmlproofer --check-html 이 있음. omx-lab 포함해 Docker(ruby:3.1)로 똑같이 돌려 통과 확인 (2026-11-21)
   - 로컬 클론: `~/isaac/omx_isaac_lab/langpeu.github.io` (shallow). 갱신: `rsync -a --delete --delete-excluded --exclude tools/ ../omx-lab/ omx-lab/` 후 커밋
-- **소스 = `~/omx-lab/site/`** (omx-lab 폴더가 곧 git 저장소 langpeu/omx-lab. rsync 불필요)
+- **소스 = `~/omx-lab/site/`** (omx-lab 폴더가 곧 git 저장소 langpeudoit/omx-lab. rsync 불필요)
   - `index.html` 첫 화면(문제 목록), `common/lab.css` 공통 디자인, `common/lab.js` 공통 코드 (`window.OmxLab`)
     - **(2026-11-21 재정리) 아래 "피지컬AI 실험실 구조" 절이 최신. 이 절의 pNN 폴더·상황 번호는 옛 것**
     - `OmxLab.start()` → lab: `run({setup, control, duration, judge, done})`, `resetPose()`, `showPose(q)`, `showLever(bodyIds, pivotBody)`, `jointGauge(el, {...})`, `onFrame`, `onBusy`, `setPayload(kg)`
@@ -93,7 +97,7 @@ Isaac Sim 실습 폴더(omx_lab: lab01~10.py, usd_lab, mujoco_web)는 2026-11-22
 - 떠 있는 계산기 `common/calc.js` (`OmxCalc.evaluate/open/close`, `\` 키, 답 넣기 = 마지막으로 누른 number 입력칸)
 - PROBLEMS 설명의 q̇/q̈ 는 lab.js `rich()` 가 화면에 넣을 때 `<span class="d1/d2">` 로 바꿈 (그대로 써도 됨)
 - 검사: `python3 site/tools/check_site.py` (번호 직접 씀·옛 링크·폴더·옛 주소 폴더 없음), 브라우저 `tools/test.html`(29개) · `tools/calc_test.html`(13개) — 스크래치 `mn.py`(Marionette, 캐시 끔, `--dark --sleep --ajs`)로 실행. 헤드리스 스크린샷은 웹 글꼴 로딩 전이면 글자가 빠져 보임 → `--sleep 4`
-- 배포: omx-lab 폴더에서 commit → push (Cloudflare Pages 빌드가 site/tools/ 를 지우고 site/ 배포)
+- 배포: 작업 브랜치 push → PR → main merge (Cloudflare Pages 빌드가 site/tools/ 를 지우고 site/ 배포). main 직접 push 금지
 - 확인 값(재정리 뒤 브라우저): torque 1.0 Nm 버팀, 마찰 끔 0.55 떨어짐/0.58 버팀 · sag 3.27° · contact 10.5 mm
 
 ### 상황 4 torque 실험 방식 변경 (2026-11-21, 사용자 요청)
