@@ -64,6 +64,20 @@ header.top p b { color: var(--text); }
 @media (max-width: 900px) { .grid { grid-template-columns: minmax(0, 1fr); } }
 .simcol { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 @media (max-width: 900px) { .simcol { position: static; } }
+/* 해설 영상 카드: 시뮬레이션 열이 화면보다 길어지면 열 안에서 스크롤 */
+@media (min-width: 901px) { .simcol:has(.video-card) { max-height: calc(100vh - 24px); overflow-y: auto; } }
+.video-card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.video-card h2 { margin: 0; font-size: var(--fs-md, 1rem); }
+/* 세로(좁은) 화면: 영상 카드를 본문 맨 아래로 */
+@media (max-width: 900px) {
+  .simcol:has(.video-card) { display: contents; }
+  .simcol:has(.video-card) .viewport { order: 0; margin-bottom: -12px; }
+  .simcol:has(.video-card) .gauges { order: 1; }
+  .simcol:has(.video-card) ~ .steps { order: 2; }
+  .simcol:has(.video-card) .video-card { order: 3; }
+}
+.video-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; background: #000; }
+.video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .viewport { position: relative; width: 100%; max-width: 100%; aspect-ratio: 4 / 3; background: var(--viewport);
   border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
 .viewport canvas { display: block; width: 100%; height: 100%; touch-action: none; }
