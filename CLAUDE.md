@@ -39,6 +39,7 @@ Isaac Sim 실습 폴더(omx_lab: lab01~10.py, usd_lab, mujoco_web)는 2026-11-22
 - 검사: `python3 site/tools/check_site.py`, 브라우저 `tools/test.html`(42개)·`tools/calc_test.html`(13개). 헤드리스 Firefox Marionette 스크립트 mn.py 는 스크래치에 있었음(지워졌으면 다시 작성: 프로필 ~/snap/firefox/common/omxtest/prof, 캐시 끔, ExecuteAsyncScript)
 - **main 반영은 PR 로만 (2026-11-23 사용자 결정)**: main 에 직접 commit·push 하지 않는다. 작업 브랜치(worktree)에서 push → `gh pr create` → 사용자 확인 후 merge. (저장소를 public 으로 바꾼 뒤 GitHub 브랜치 보호를 켬: PR 필수, 승인 0명, 관리자도 적용, 강제 push·삭제 금지)
 - **GitHub flow (2026-11-23)**: 이슈 → 브랜치 → PR(`Closes #번호`) → merge. 템플릿은 `.github/` (새 문제 / 개선·버그 이슈, PR). 라벨: 종류 `새 문제`·`개선`·`문서`·`chore` + 단원 `기구학`·`정역학`·`동역학`·`제어`·`액추에이터`·`시뮬레이션`·`도구` + `공통코드`
+- **브랜치 이름 (관례, GitHub 이 강제 못 함: 이름 규칙은 Enterprise 기능이라 Ruleset 으로 시도했으나 적용 안 됨, 2026-11-23)**: `feature/<이슈번호>-<id>` (새 문제·기능, 예 `feature/2-inertia`), `fix/…`, `docs/…`, `chore/…`, Claude 세션 자동 브랜치 `claude/…`
 - 배포: PR 을 main 에 merge 하면 Cloudflare Pages 가 `site/` 를 자동 배포(약 1분). 배포는 사용자 요청이 있을 때만. 커밋에 Claude 표시(Co-Authored-By 등) 넣지 말 것
 - pkill -f "http.server" 는 자기 셸까지 죽임 → `pgrep -f "^python3 -m http.server 8765" | xargs -r kill`
 - 사용자 선호: 모든 답변 한국어, 계산한 값을 바로 확인하는 실험을 원함(이분법 싫어함), 인위적 받침대 금지, 원본 Claude Docs 문서는 더 이상 안 씀
